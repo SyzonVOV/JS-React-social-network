@@ -8,7 +8,7 @@ function MyPosts() {
       <div>
         My posts
         <div>
-          New post
+          New post 2
         </div>
       </div>
       <div>
