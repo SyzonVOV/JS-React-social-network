@@ -10,3 +10,7 @@
   margin: 10px 150px;
   background-color: #DCEED1;
 }
+
+.active {
+  color: khaki;
+}
