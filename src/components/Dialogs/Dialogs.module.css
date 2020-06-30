@@ -1,0 +1,29 @@
+.dialogs {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 50px auto;
+
+}
+
+.header{
+    grid-column: 1 / -1;
+}
+
+.dialogsUsers {
+    grid-column: 1 / 5;
+}
+
+.dialog {
+
+}
+
+.messagesUser {
+    grid-column: 5 / -1;
+}
+
+.message {
+    border: 2px ridge rgba(170, 50, 220, .6);
+    border-radius: 25% 10%;
+    padding: 5px 10px;
+    margin-bottom: 8px;
+}
