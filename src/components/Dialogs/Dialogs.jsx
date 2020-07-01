@@ -1,38 +1,40 @@
 import React from "react";
 import style from "./Dialogs.module.css";
+import {NavLink} from "react-router-dom";
+
+function DialogItem(props) {
+  return (
+    <div className={style.dialog}>
+      <NavLink to={`/dialogs/${props.id}`}>{props.userName}</NavLink>
+    </div>
+  )
+}
+
+function Message(props) {
+  return (
+    <div className={style.message}>{props.message}</div>
+  )
+}
 
 function Dialogs() {
   return (
     <div className={style.dialogs}>
       <div className={style.header}><p>Dialogs</p></div>
       <div className={style.dialogsUsers}>
-        <div className={style.dialog}>
-          Dimych
-        </div>
-        <div className={style.dialog}>
-          Andrey
-        </div>
-        <div className={style.dialog}>
-          Serg
-        </div>
-        <div className={style.dialog}>
-          Anton
-        </div>
-        <div className={style.dialog}>
-          Galia
-        </div>
-        <div className={style.dialog}>
-          Svieta
-        </div>
-        <div className={style.dialog}>
-          Gena
-        </div>
+        <DialogItem userName="Dymich" id="1"/>
+        <DialogItem userName="Andrey" id="2"/>
+        <DialogItem userName="Serg" id="3"/>
+        <DialogItem userName="Anton" id="4"/>
+        <DialogItem userName="Galia" id="5"/>
+        <DialogItem userName="Svieta" id="6"/>
+        <DialogItem userName="Gena" id="7"/>
       </div>
       <div className={style.messagesUser}>
-        <div className={style.message}>Hi</div>
-        <div className={style.message}>How are you?</div>
-        <div className={style.message}>Wie gehts es dir?</div>
-        <div className={style.message}>Wie heißt du?</div>
+        <Message message='Hi'/>
+        <Message message='How are you?'/>
+        <Message message='Wie gehts es dir?'/>
+        <Message message='Wie heißt du?'/>
+        <Message message='Guten Tag!'/>
         <div className={style.message}>Good morning!!!</div>
         <div className={style.message}>Guten Tag!</div>
         <div className={style.message}>Where have you been?</div>
