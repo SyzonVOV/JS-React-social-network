@@ -5,11 +5,11 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 
 
-function Profile() {
+function Profile(props) {
   return (
     <div className={style.content}>
       <ProfileInfo />
-      <MyPosts />
+      <MyPosts posts={props.posts}/>
     </div>
   )
 }

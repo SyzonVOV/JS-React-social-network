@@ -2,7 +2,18 @@ import React from "react";
 import style from "./MyPosts.module.css";
 import Post from "./Post/Post";
 
-function MyPosts() {
+function MyPosts(props) {
+
+/*  let posts = [
+    {id: 1, post: 'Hi, how are you?', likesCount: 38},
+    {id: 2, post: "It's a nice day, isn't it?", likesCount: 12},
+    {id: 3, post: 'Wie gehts es dir?', likesCount: 58},
+    {id: 4, post: 'Wie heißt du?', likesCount: 15},
+    {id: 5, post: 'Number 1', likesCount: 8},
+  ]*/
+
+  let postsElements = props.posts.map( post => <Post message={post.post} likesCount={post.likesCount}/>  )
+
   return (
     <div>
       <div>
@@ -13,16 +24,7 @@ function MyPosts() {
       </div>
       <div>
         All posts
-        <Post message='Hi, how are you?'/>
-        <Post message="It's a nice day, isn't it?"/>
-        <Post message="Number 1"/>
-        <Post message="Number 2"/>
-        <Post message="Number 3"/>
-        <Post message="Number 4"/>
-        <Post message="Number 5"/>
-        <Post message="Number 6"/>
-        <Post message="Number 7"/>
-        <Post message="Number 8"/>
+        { postsElements }
       </div>
       <br/>
       <p>Main content</p>

@@ -16,28 +16,30 @@ function Message(props) {
   )
 }
 
-function Dialogs() {
+function Dialogs(props) {
+
+  let dialogs = props.data.dialogs;
+
+  let messages = [
+    {id: 1, message: 'Hi!!!!'},
+    {id: 2, message: 'How are you?'},
+    {id: 3, message: 'Wie gehts es dir?'},
+    {id: 4, message: 'Wie heißt du?'},
+    {id: 5, message: 'Guten Tag!'},
+  ]
+
+  let dialogElements = dialogs.map( dialog => <DialogItem userName={dialog.name} id={dialog.name}/> )
+
+  let messageElements = messages.map( message => <Message message={message.message}/> )
+
   return (
     <div className={style.dialogs}>
       <div className={style.header}><p>Dialogs</p></div>
       <div className={style.dialogsUsers}>
-        <DialogItem userName="Dymich" id="1"/>
-        <DialogItem userName="Andrey" id="2"/>
-        <DialogItem userName="Serg" id="3"/>
-        <DialogItem userName="Anton" id="4"/>
-        <DialogItem userName="Galia" id="5"/>
-        <DialogItem userName="Svieta" id="6"/>
-        <DialogItem userName="Gena" id="7"/>
+        { dialogElements }
       </div>
       <div className={style.messagesUser}>
-        <Message message='Hi'/>
-        <Message message='How are you?'/>
-        <Message message='Wie gehts es dir?'/>
-        <Message message='Wie heißt du?'/>
-        <Message message='Guten Tag!'/>
-        <div className={style.message}>Good morning!!!</div>
-        <div className={style.message}>Guten Tag!</div>
-        <div className={style.message}>Where have you been?</div>
+        { messageElements }
       </div>
     </div>
   )
