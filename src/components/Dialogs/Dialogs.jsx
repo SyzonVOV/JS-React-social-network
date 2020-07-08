@@ -18,15 +18,9 @@ function Message(props) {
 
 function Dialogs(props) {
 
-  let dialogs = props.data.dialogs;
+  let dialogs = props.state.dialogs;
 
-  let messages = [
-    {id: 1, message: 'Hi!!!!'},
-    {id: 2, message: 'How are you?'},
-    {id: 3, message: 'Wie gehts es dir?'},
-    {id: 4, message: 'Wie heißt du?'},
-    {id: 5, message: 'Guten Tag!'},
-  ]
+  let messages = props.state.messages;
 
   let dialogElements = dialogs.map( dialog => <DialogItem userName={dialog.name} id={dialog.name}/> )
 
