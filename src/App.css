@@ -1,13 +1,6 @@
-.app-wrapper {
-  height: 100%;
-  display: grid;
-  grid-template-columns: repeat(17, 1fr);
-  grid-template-rows: 70px auto;
-}
-
 .app-wrapper-content {
-  grid-column: 3 / -3;
-  margin: 10px 150px;
+  margin: 0px 150px;
+  margin-top: 90px;
   background-color: #DCEED1;
 }
 

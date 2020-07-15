@@ -1,4 +1,14 @@
 .nav {
-  grid-column: -3 / -1;
-  background-color: #7A918D;
+  position: fixed;
+  width: 70px;
+  top: 75px;
+  height: 100vh;
+  background-color: whitesmoke;
+  padding: 20px;
+  right: 0;
+}
+
+.item a{
+  color: #545454;
+  text-decoration: none;
 }
