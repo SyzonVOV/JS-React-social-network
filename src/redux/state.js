@@ -11,6 +11,8 @@ let state = {
       {id: 4, post: 'Wie heißt du?', likesCount: 15},
       {id: 5, post: 'Number 1', likesCount: 8},
     ],
+
+    newPostText: 'hello',
   },
 
   dialogsPage: {
@@ -34,14 +36,20 @@ let state = {
 
 };
 
-export let addPost = (postMessage) => {
+export let addPost = () => {
   let newPost = {
     id: 5,
-    post: postMessage,
+    post: state.profilePage.newPostText,
     likesCount: 0
   };
   state.profilePage.posts.push(newPost);
-  renderEntireTree(state, addPost);
+  state.profilePage.newPostText = '';
+  renderEntireTree(state, addPost, setStateTextArea);
+}
+
+export let setStateTextArea = ( newTextArea ) => {
+  state.profilePage.newPostText = newTextArea;
+  renderEntireTree(state, addPost, setStateTextArea);
 }
 
 export default state;

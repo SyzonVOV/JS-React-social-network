@@ -5,10 +5,10 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 
-export let renderEntireTree = (state, addPost) => {
+export let renderEntireTree = (state, addPost, setStateTextArea) => {
   ReactDOM.render(
     <React.StrictMode>
-      <App state={state} addPost={addPost}/>
+      <App state={state} addPost={addPost} setStateTextArea={setStateTextArea}/>
     </React.StrictMode>,
     document.getElementById('root')
   );
