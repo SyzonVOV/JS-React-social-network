@@ -2,6 +2,7 @@ import React from "react";
 import style from "./Dialogs.module.css";
 import {NavLink} from "react-router-dom";
 
+
 function DialogItem(props) {
   return (
     <div className={style.dialog}>
@@ -17,14 +18,23 @@ function Message(props) {
 }
 
 function Dialogs(props) {
+  let state = props.dialogsPage;
 
-  let dialogs = props.state.dialogs;
-
-  let messages = props.state.messages;
+  let dialogs = state.dialogs;
+  let messages = state.messages;
+  let newMessageBody = state.newMessageBody;
 
   let dialogElements = dialogs.map( dialog => <DialogItem userName={dialog.name} id={dialog.name}/> )
-
   let messageElements = messages.map( message => <Message message={message.message}/> )
+
+  const onSendMessageClick = () => {
+    props.sendMessage();
+  };
+
+  const onNewMessageChanged = (e) => {
+    let body = e.target.value;
+    props.updateNewMessageBody(body)
+  };
 
   return (
     <div className={style.dialogs}>
@@ -33,7 +43,13 @@ function Dialogs(props) {
         { dialogElements }
       </div>
       <div className={style.messagesUser}>
-        { messageElements }
+        <div>{messageElements}</div>
+        <div>
+          <div><textarea placeholder={'Enter your message here.'}
+                         value={newMessageBody}
+                         onChange={ onNewMessageChanged }/></div>
+          <div><button onClick={ onSendMessageClick }>Send</button></div>
+        </div>
       </div>
     </div>
   )
