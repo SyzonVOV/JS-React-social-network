@@ -23,22 +23,22 @@ let initialState =  {
   };
 
 const dialogsReducer = (state = initialState, action) => {
-  debugger
+  let stateCopy = {...state};
   switch (action.type) {
     case UPDATE_NEW_MESSAGE_BODY:
-      let stateCopy = state;
       stateCopy.newMessageBody = action.body;
       return stateCopy;
 
     case SEND_MESSAGE:
-      let body = state.newMessageBody;
-      state.newMessageBody = '';
-      state.messages.push({id: 6, message: body});
-      return state;
+      let body = stateCopy.newMessageBody;
+      stateCopy.newMessageBody = '';
+      stateCopy.messages = [...state.messages]
+      stateCopy.messages.push({id: 6, message: body});
+      return stateCopy;
 
     default:
       console.log(`Sorry, we are out of ${action.type} in dialogs-reducer, but will return the state`);
-      return state;
+      return stateCopy;
   }
 
 };

@@ -16,27 +16,30 @@ let initialState = {
 
 
 const profileReducer = (state = initialState, action) => {
+  let stateCopy = {...state}
   switch (action.type) {
     case APP_POST:
       let newPost = {
         id: 6,
-        post: state.newPostText,
+        post: stateCopy.newPostText,
         likesCount: 0
       };
-      state.posts.push(newPost);
-      state.newPostText = '';
-      return state;
+      stateCopy.posts = [...state.posts]
+      stateCopy.posts.push(newPost);
+      stateCopy.newPostText = '';
+      return stateCopy;
 
     case UPDATE_NEW_POST_TEXT:
-      state.newPostText = action.newText;
-      return state;
+      stateCopy.newPostText = action.newText;
+      return stateCopy;
 
     default:
       console.log(`Sorry, we are out of ${action.type} in profile-reducer.`);
-      return state;
+      return stateCopy;
   }
 
 };
+
 
 export const addPostActionCreator = () => ({ type: APP_POST });
 

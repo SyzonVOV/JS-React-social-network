@@ -22,18 +22,18 @@ import {BrowserRouter} from "react-router-dom";
   );
 }*/
 
-//После подключения React-Redux урок 45
+//После подключения React-Redux урок 45, as it was mention in lesson 47
 //Можно не использовать функцию renderEntireTree...
 //...реакт-редах будет сам перерисовывать
 let renderEntireTree = () => {
   ReactDOM.render(
-   // <React.StrictMode>
+    <React.StrictMode>
       <BrowserRouter>
         <Provider store={store}>
           <App/>
         </Provider>
       </BrowserRouter>,
-   // </React.StrictMode>,
+    </React.StrictMode>,
     document.getElementById('root')
   );
 }
@@ -43,11 +43,11 @@ renderEntireTree();
 
 //Урок 47 больше не нужно самим подписоваться на изменения стейта...
 //...это делает библиотека реакт-редах, когда ми делаем конект
-store.subscribe(() => {
+/*store.subscribe(() => {
     //let state = store.getState()
     renderEntireTree();
   }
-);
+);*/
 
 
 // If you want your app to work offline and load faster, you can change
