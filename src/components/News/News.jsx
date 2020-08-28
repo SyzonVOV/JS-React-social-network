@@ -6,6 +6,7 @@ function TheNewsContainer(props) {
   let news = props.state.news;
   let newsElements = news.map( news => <TheNews title={news.title}
                                                 news={news.news}
+                                                key={news.id}
                                                 likes={news.likes}/> )
 
   return newsElements
