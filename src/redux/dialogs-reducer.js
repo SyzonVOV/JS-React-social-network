@@ -61,7 +61,6 @@ const dialogsReducer = (state = initialState, action) => {
       };
 
     default:
-      console.log(`Sorry, we are out of ${action.type} in dialogs-reducer, but will return the state`);
       return state;
   }
 };

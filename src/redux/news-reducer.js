@@ -34,7 +34,6 @@ const newsReducer = (state = initialState, action) => {
       break;
 
     default:
-      console.log(`Sorry, we are out of ${action.type}.`);
   }
 
   return state;

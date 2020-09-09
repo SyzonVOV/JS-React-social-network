@@ -34,7 +34,6 @@ const profileReducer = (state = initialState, action) => {
       return stateCopy;
 
     default:
-      console.log(`Sorry, we are out of ${action.type} in profile-reducer.`);
       return stateCopy;
   }
 
