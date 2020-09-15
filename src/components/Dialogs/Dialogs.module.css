@@ -23,7 +23,7 @@
 
 .message {
     border: 2px ridge rgba(170, 50, 220, .6);
-    border-radius: 25% 10%;
+    border-radius: 25%;
     padding: 5px 10px;
     margin-bottom: 8px;
 }
