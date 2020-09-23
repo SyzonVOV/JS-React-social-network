@@ -7,3 +7,9 @@
 .active {
   color: khaki;
 }
+
+.image-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
