@@ -5,10 +5,13 @@ import SuperMyPostContainer from "./MyPosts/MyPostsContainer";
 
 
 
-function Profile() {
+function Profile(props) {
+  console.log(props)
+  //debugger
+
   return (
     <div className={style.content}>
-      <ProfileInfo />
+      <ProfileInfo profile={props.profile}/>
       <SuperMyPostContainer/>
     </div>
   )

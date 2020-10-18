@@ -11,6 +11,7 @@ import {
 import * as axios from "axios";
 import Users from "./Users";
 import Loader from "../common/Loader";
+import Volodymyr from "../../assets/images/Volodymyr_the_Great.jpg";
 
 class UsersAPIComponent extends React.Component {
 
@@ -20,7 +21,7 @@ class UsersAPIComponent extends React.Component {
 
   componentDidMount() {
     this.props.setIsFetching(true);
-    let userURL = 'https://upload.wikimedia.org/wikipedia/uk/d/d0/%D0%9A%D0%BD%D1%8F%D0%B7%D1%8C_%D0%92%D0%BE%D0%BB%D0%BE%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%B8%D0%B9.jpg';
+    let userURL = Volodymyr;
     //axios.get('https://social-network.samuraijs.com/api/1.0/users', { withCredentials: true })
     axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${ this.props.currentPage }&count=${ this.props.pageSize }`)
       .then(response => {

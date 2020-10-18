@@ -1,5 +1,5 @@
 import React from "react";
-import {addPostActionCreator, updateNewPostTextActionCreator} from "../../../redux/profile-reducer";
+import {addPost, updateNewPostText} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
 
@@ -8,11 +8,11 @@ function MyPostsContainer(props) {
   let state = props.store.getState();
 
   let addPost = () => {
-    props.store.dispatch(addPostActionCreator());
+    props.store.dispatch(addPost());
   }
 
   let updateTextArea = (newTextArea) => {
-    props.store.dispatch(updateNewPostTextActionCreator(newTextArea));
+    props.store.dispatch(updateNewPostText(newTextArea));
   }
   return (
     <MyPosts posts={state.profilePage.posts}
@@ -32,10 +32,10 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     addPost: () => {
-      dispatch(addPostActionCreator())
+      dispatch(addPost())
     },
     updateTextArea: (newTextArea) => {
-      dispatch(updateNewPostTextActionCreator(newTextArea))
+      dispatch(updateNewPostText(newTextArea))
     },
   }
 };
