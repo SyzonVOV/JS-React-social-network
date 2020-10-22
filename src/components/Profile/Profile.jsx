@@ -7,7 +7,7 @@ import SuperMyPostContainer from "./MyPosts/MyPostsContainer";
 
 function Profile(props) {
   console.log(props)
-  //debugger
+  // debugger
 
   return (
     <div className={style.content}>
