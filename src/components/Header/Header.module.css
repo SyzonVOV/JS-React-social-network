@@ -11,3 +11,8 @@
 .header img {
     height: 100%;
 }
+
+.loginBlock {
+    float: right;
+    margin-right: 20px;
+}
