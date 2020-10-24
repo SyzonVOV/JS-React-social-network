@@ -23,7 +23,9 @@ class UsersAPIComponent extends React.Component {
     this.props.setIsFetching(true);
     let userURL = Volodymyr;
     //axios.get('https://social-network.samuraijs.com/api/1.0/users', { withCredentials: true })
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${ this.props.currentPage }&count=${ this.props.pageSize }`)
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${ this.props.currentPage }&count=${ this.props.pageSize }`,
+      {withCredentials: true
+      })
       .then(response => {
         this.props.setIsFetching(false);
         this.props.setUsers(response.data.items.map(item => {
@@ -37,7 +39,9 @@ class UsersAPIComponent extends React.Component {
     this.props.setIsFetching(true);
     this.props.setCurrentPage(page);
     let userURL = 'https://upload.wikimedia.org/wikipedia/uk/d/d0/%D0%9A%D0%BD%D1%8F%D0%B7%D1%8C_%D0%92%D0%BE%D0%BB%D0%BE%D0%B4%D0%B8%D0%BC%D0%B8%D1%80_%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%B8%D0%B9.jpg';
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${ page }&count=${ this.props.pageSize }`).then(response => {
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${ page }&count=${ this.props.pageSize }`,
+      {withCredentials: true
+        }).then(response => {
       this.props.setIsFetching(false);
       this.props.setUsers(response.data.items.map(item => {
         return { ...item, photoUrl: userURL }
