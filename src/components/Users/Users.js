@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import * as axios from "axios";
 
 let Users = (props) => {
-
+  const api_key = process.env.REACT_APP_API_KEY;
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
   let pages = [];
   for (let i = 1; i <= pagesCount; i++) {
@@ -32,7 +32,7 @@ let Users = (props) => {
               axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`, {},
                 {withCredentials: true,
                 headers:
-                  {'API-KEY': '36367688-1665-4726-affe-12dc3a2dcaa0'} })
+                  {'API-KEY': api_key} })
                 .then(response => {
                   if ( response.data.resultCode === 0 ) props.follow(user.id)
                 })
@@ -46,7 +46,7 @@ let Users = (props) => {
               axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
                 {withCredentials: true,
                   headers:
-                    {'API-KEY': '36367688-1665-4726-affe-12dc3a2dcaa0'} })
+                    {'API-KEY': api_key} })
                 .then(response => {
                   if ( response.data.resultCode === 0 ) props.unfollow(user.id)
                 })
