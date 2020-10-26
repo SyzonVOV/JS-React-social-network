@@ -8,11 +8,11 @@ import {
   setUsers,
   unfollow
 } from "../../redux/users-reducer";
-import * as axios from "axios";
 import Users from "./Users";
 import Loader from "../common/Loader";
 import Volodymyr from "../../assets/images/Volodymyr_the_Great.jpg";
-import { getUsers } from "../../api/api";
+import { usersAPI } from "../../api/api";
+
 
 class UsersAPIComponent extends React.Component {
 
@@ -22,23 +22,23 @@ class UsersAPIComponent extends React.Component {
 
   componentDidMount() {
     this.props.setIsFetching(true);
-    getUsers(this.props.currentPage, this.props.pageSize)
-      .then(response => {
+    usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
+      .then(data => {
         this.props.setIsFetching(false);
-        this.props.setUsers(response.data.items.map(item => {
+        this.props.setUsers(data.items.map(item => {
           return { ...item, photoUrl: Volodymyr }
         }));
-        this.props.setTotalUsersCount(response.data.totalCount);
+        this.props.setTotalUsersCount(data.totalCount);
       });
   };
 
   onPageChanged = (page) => {
     this.props.setIsFetching(true);
     this.props.setCurrentPage(page);
-    getUsers(this.props.currentPage, this.props.pageSize)
-      .then(response => {
+    usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
+      .then(data => {
       this.props.setIsFetching(false);
-      this.props.setUsers(response.data.items.map(item => {
+      this.props.setUsers(data.items.map(item => {
         return { ...item, photoUrl: Volodymyr }
       }));
     });
