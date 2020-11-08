@@ -6,6 +6,7 @@ import {
   setIsFetching,
   setTotalUsersCount,
   setUsers,
+  toggleFollowingProgress,
   unfollow
 } from "../../redux/users-reducer";
 import Users from "./Users";
@@ -35,7 +36,7 @@ class UsersAPIComponent extends React.Component {
   onPageChanged = (page) => {
     this.props.setIsFetching(true);
     this.props.setCurrentPage(page);
-    usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
+    usersAPI.getUsers(page, this.props.pageSize)
       .then(data => {
       this.props.setIsFetching(false);
       this.props.setUsers(data.items.map(item => {
@@ -46,15 +47,18 @@ class UsersAPIComponent extends React.Component {
 
   render() {
     return <>
-      {this.props.isFetching
-        ? <Loader />
-        : <Users totalUsersCount={this.props.totalUsersCount}
-             pageSize={this.props.pageSize}
-             users={this.props.users}
-             currentPage={this.props.currentPage}
-             onPageChanged={this.onPageChanged}
-             follow={this.props.follow}
-             unfollow={this.props.unfollow}/>
+      { this.props.isFetching
+        ? <Loader/>
+        : <Users totalUsersCount={ this.props.totalUsersCount }
+                 pageSize={ this.props.pageSize }
+                 users={ this.props.users }
+                 currentPage={ this.props.currentPage }
+                 onPageChanged={ this.onPageChanged }
+                 follow={ this.props.follow }
+                 unfollow={ this.props.unfollow }
+                 toggleFollowingProgress={ this.props.toggleFollowingProgress }
+                 followingInProgress={ this.props.followingInProgress }
+        />
       }
     </>
   }
@@ -67,6 +71,7 @@ const mapStateToProps = (state) => {
     totalUsersCount: state.usersPage.totalUsersCount,
     currentPage: state.usersPage.currentPage,
     isFetching: state.usersPage.isFetching,
+    followingInProgress: state.usersPage.followingInProgress,
   }
 }
 
@@ -95,12 +100,13 @@ const mapDispatchToProps = {
 
 //third version of mapDispatchToProps` code lesson 58
 const mapDispatchToProps = {
-    follow,
-    unfollow,
-    setUsers,
-    setCurrentPage,
-    setTotalUsersCount,
-    setIsFetching,
+  follow,
+  unfollow,
+  setUsers,
+  setCurrentPage,
+  setTotalUsersCount,
+  setIsFetching,
+  toggleFollowingProgress,
 }
 
 export default connect (mapStateToProps, mapDispatchToProps)(UsersAPIComponent);
