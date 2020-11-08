@@ -9,8 +9,9 @@ const instanceSamuraijs = axios.create({
 });
 
 export const usersAPI = {
-  getUsers(currentPage = 1, pageSize = 10) {
-    return instanceSamuraijs.get(`users?page=${ currentPage }&count=${ pageSize }`).then(resp => resp.data);
+  async getUsers(currentPage = 1, pageSize = 10) {
+    let response = await instanceSamuraijs.get(`users?page=${ currentPage }&count=${ pageSize }`);
+    return response.data;
   }
 }
 
