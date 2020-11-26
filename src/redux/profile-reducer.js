@@ -1,24 +1,27 @@
+import { profileAPI } from "../api/api";
+import Volodymyr from "../assets/images/Volodymyr_the_Great.jpg";
+
 const APP_POST = 'APP-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
 
 let initialState = {
-    posts: [
-      {id: 1, post: 'Hi, how are you?', likesCount: 38},
-      {id: 11, post: 'Ha-h!', likesCount: 38},
-      {id: 2, post: "It's a nice day, isn't it?", likesCount: 12},
-      {id: 3, post: 'Wie gehts es dir?', likesCount: 58},
-      {id: 4, post: 'Wie heißt du?', likesCount: 15},
-      {id: 5, post: 'Number 5', likesCount: 8},
-    ],
+  posts: [
+    { id: 1, post: 'Hi, how are you?', likesCount: 38 },
+    { id: 11, post: 'Ha-h!', likesCount: 38 },
+    { id: 2, post: "It's a nice day, isn't it?", likesCount: 12 },
+    { id: 3, post: 'Wie gehts es dir?', likesCount: 58 },
+    { id: 4, post: 'Wie heißt du?', likesCount: 15 },
+    { id: 5, post: 'Number 5', likesCount: 8 },
+  ],
 
-    newPostText: '',
-    profile: null,
-  };
+  newPostText: '',
+  profile: null,
+};
 
 
 const profileReducer = (state = initialState, action) => {
-  let stateCopy = {...state}
+  let stateCopy = { ...state }
   switch (action.type) {
     case APP_POST:
       let newPost = {
@@ -44,9 +47,9 @@ const profileReducer = (state = initialState, action) => {
 
 };
 
-//ActionCreator
+//actionCreators
 export const addPost = () => ({ type: APP_POST });
-export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
+const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
 
 export const updateNewPostText = (text) => {
   return {
@@ -55,6 +58,15 @@ export const updateNewPostText = (text) => {
   }
 };
 
+//thunkCreators
+export const Thunks = {
+  getProfile: (userId) => (dispatch) => {
+    profileAPI.getProfile(userId)
+      .then(data => {
+        dispatch(setUserProfile({ ...data, photoUrl: Volodymyr }));
+      });
+  }
+}
 
 
 export default profileReducer;

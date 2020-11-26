@@ -1,5 +1,4 @@
 import React from "react";
-import style from "./ProfileInfo.module.css";
 import Loader from "../../common/Loader";
 
 
@@ -16,7 +15,7 @@ function ProfileInfo(props) {
         <img src="https://wallpaperaccess.com/full/1282257.jpg" alt="" width='100%'/>
       </div>
       <div>
-        <img src={props.profile.photos.large}/>
+        <img src={props.profile.photos.large || props.profile.photoUrl} alt="user"/>
         ava + description
       </div>
     </div>

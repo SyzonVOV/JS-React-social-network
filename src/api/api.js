@@ -15,11 +15,25 @@ export const usersAPI = {
   }
 }
 
+export const profileAPI = {
+  async getProfile(userId = 2) {
+    let response = await instanceSamuraijs.get(`profile/${ userId }`);
+    return response.data;
+  }
+}
+
 export const followAPI = {
   postFollow(id) {
     return instanceSamuraijs.post(`follow/${id}`).then(resp => resp.data);
   },
   deleteFollow(id) {
     return instanceSamuraijs.delete(`follow/${id}`).then(resp => resp.data);
+  }
+}
+
+export const authAPI = {
+  async authMe() {
+    let response = await instanceSamuraijs.get(`auth/me`);
+    return response.data;
   }
 }

@@ -1,28 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  follow,
-  setCurrentPage,
-  setIsFetching,
-  setTotalUsersCount,
-  setUsers,
-  toggleFollowingProgress,
-  unfollow
-} from "../../redux/users-reducer";
+import { followTh, getUsersTh, setCurrentPage, setTotalUsersCount, unfollowTh } from "../../redux/users-reducer";
 import Users from "./Users";
 import Loader from "../common/Loader";
-import Volodymyr from "../../assets/images/Volodymyr_the_Great.jpg";
-import { usersAPI } from "../../api/api";
 
 
 class UsersAPIComponent extends React.Component {
 
-  constructor(props) {
-    super(props);
-  };
-
   componentDidMount() {
-    this.props.setIsFetching(true);
+//    Changed in lesson 66
+    this.props.getUsersTh(this.props.currentPage, this.props.pageSize);
+
+//    Changed in lesson 66
+/*    this.props.setIsFetching(true);
     usersAPI.getUsers(this.props.currentPage, this.props.pageSize)
       .then(data => {
         this.props.setIsFetching(false);
@@ -30,19 +20,24 @@ class UsersAPIComponent extends React.Component {
           return { ...item, photoUrl: Volodymyr }
         }));
         this.props.setTotalUsersCount(data.totalCount);
-      });
+      });*/
   };
 
   onPageChanged = (page) => {
-    this.props.setIsFetching(true);
     this.props.setCurrentPage(page);
+
+    //    Changed in lesson 66
+    this.props.getUsersTh(page, this.props.pageSize);
+
+//    Changed in lesson 66
+/*    this.props.setIsFetching(true);
     usersAPI.getUsers(page, this.props.pageSize)
       .then(data => {
       this.props.setIsFetching(false);
       this.props.setUsers(data.items.map(item => {
         return { ...item, photoUrl: Volodymyr }
       }));
-    });
+    });*/
   };
 
   render() {
@@ -54,9 +49,8 @@ class UsersAPIComponent extends React.Component {
                  users={ this.props.users }
                  currentPage={ this.props.currentPage }
                  onPageChanged={ this.onPageChanged }
-                 follow={ this.props.follow }
-                 unfollow={ this.props.unfollow }
-                 toggleFollowingProgress={ this.props.toggleFollowingProgress }
+                 followTh={ this.props.followTh }
+                 unfollowTh={ this.props.unfollowTh }
                  followingInProgress={ this.props.followingInProgress }
         />
       }
@@ -100,13 +94,11 @@ const mapDispatchToProps = {
 
 //third version of mapDispatchToProps` code lesson 58
 const mapDispatchToProps = {
-  follow,
-  unfollow,
-  setUsers,
+  followTh,
+  unfollowTh,
   setCurrentPage,
   setTotalUsersCount,
-  setIsFetching,
-  toggleFollowingProgress,
+  getUsersTh,
 }
 
 export default connect (mapStateToProps, mapDispatchToProps)(UsersAPIComponent);
