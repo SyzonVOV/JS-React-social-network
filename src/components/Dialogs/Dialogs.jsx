@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./Dialogs.module.css";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 
 function DialogItem(props) {
@@ -18,6 +18,7 @@ function Message(props) {
 }
 
 function Dialogs(props) {
+
   let state = props.dialogsPage;
 
   let dialogs = state.dialogs;

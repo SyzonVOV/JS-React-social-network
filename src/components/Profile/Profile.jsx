@@ -3,7 +3,6 @@ import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import SuperMyPostContainer from "./MyPosts/MyPostsContainer";
 
 
-
 function Profile(props) {
 
   return (
