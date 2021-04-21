@@ -1,5 +1,6 @@
 import React from "react";
 import Loader from "../../common/Loader";
+import ProfileStatusMessage from "./ProfileStatusMessage"
 import backgroundIMG from "../../../assets/images/1282257.jpg";
 
 
@@ -17,6 +18,7 @@ function ProfileInfo(props) {
       </div>
       <div>
         <img src={props.profile.photos.large || props.profile.photoUrl} alt="user"/>
+        <ProfileStatusMessage status={'Hello World!!!'}/>
         ava + description
       </div>
     </div>
