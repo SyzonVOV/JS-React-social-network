@@ -3,6 +3,7 @@ import {sendMessageCreator, updateNewMessageBodyCreator} from "../../redux/dialo
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import { withAuthCheck } from "../_HOC/AuthRedirectHOC";
+import { compose } from "redux";
 
 
 /*
@@ -45,8 +46,7 @@ let mapDispatchToProps = (dispatch) => {
   }
 };
 
-let WithAuthCheckComponent = withAuthCheck(Dialogs);
-
-const SuperDialogsContainer = connect(mapStateToProps, mapDispatchToProps)(WithAuthCheckComponent)
-
-export default SuperDialogsContainer;
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withAuthCheck
+)(Dialogs)

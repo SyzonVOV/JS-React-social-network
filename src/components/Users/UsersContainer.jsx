@@ -4,6 +4,7 @@ import { followTh, getUsersTh, setCurrentPage, setTotalUsersCount, unfollowTh } 
 import Users from "./Users";
 import Loader from "../common/Loader";
 import { withAuthCheck } from "../_HOC/AuthRedirectHOC";
+import { compose } from "redux";
 
 
 class UsersAPIComponent extends React.Component {
@@ -102,6 +103,7 @@ const mapDispatchToProps = {
   getUsersTh,
 }
 
-let WithAuthCheckComponent = withAuthCheck(UsersAPIComponent);
-
-export default connect (mapStateToProps, mapDispatchToProps)(WithAuthCheckComponent);
+export default compose(
+  connect (mapStateToProps, mapDispatchToProps),
+  withAuthCheck
+)(UsersAPIComponent)

@@ -1,5 +1,6 @@
 import React from "react";
 import Loader from "../../common/Loader";
+import backgroundIMG from "../../../assets/images/1282257.jpg";
 
 
 function ProfileInfo(props) {
@@ -12,7 +13,7 @@ function ProfileInfo(props) {
   return (
     <div>
       <div>
-        <img src="https://wallpaperaccess.com/full/1282257.jpg" alt="" width='100%'/>
+        <img src={ backgroundIMG } alt="" width='100%'/>
       </div>
       <div>
         <img src={props.profile.photos.large || props.profile.photoUrl} alt="user"/>
