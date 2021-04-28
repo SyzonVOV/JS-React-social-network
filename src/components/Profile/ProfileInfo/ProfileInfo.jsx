@@ -18,7 +18,7 @@ function ProfileInfo(props) {
       </div>
       <div>
         <img src={props.profile.photos.large || props.profile.photoUrl} alt="user"/>
-        <ProfileStatusMessage status={'Hello World!!!'}/>
+        <ProfileStatusMessage status={props.status} handleUpdateStatus={props.handleUpdateStatus}/>
         ava + description
       </div>
     </div>

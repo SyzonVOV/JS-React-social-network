@@ -2,7 +2,7 @@ import React from 'react';
 import {Route} from "react-router-dom";
 import './App.css';
 import NavbarLeft from "./components/NavbarLeft/NavbarLeft";
-import NavbarRigth from "./components/NavbarRight/NavbarRigth";
+import NavbarRight from "./components/NavbarRight/NavbarRight";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
@@ -28,7 +28,7 @@ function App() {
             <Route path='/music' component={Music}/>
             <Route path='/settings' component={Settings}/>
           </div>
-        <NavbarRigth />
+        <NavbarRight />
       </div>
   );
 }

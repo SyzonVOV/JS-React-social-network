@@ -4,6 +4,7 @@ import Volodymyr from "../assets/images/Volodymyr_the_Great.jpg";
 const APP_POST = 'APP-POST';
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
+const SET_STATUS = 'SET-STATUS';
 
 let initialState = {
   posts: [
@@ -17,6 +18,7 @@ let initialState = {
 
   newPostText: '',
   profile: null,
+  status: '',
 };
 
 
@@ -41,15 +43,21 @@ const profileReducer = (state = initialState, action) => {
     case SET_USER_PROFILE:
       return { ...state, profile: action.profile };
 
+    case SET_STATUS:
+      return { ...state, status: action.payload };
+
     default:
       return stateCopy;
   }
 
 };
 
-//actionCreators
+// ========================
+// ---- actionCreators ----
+// ========================
 export const addPost = () => ({ type: APP_POST });
 const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
+const setUserStatus = (payload) => ({ type: SET_STATUS, payload });
 
 export const updateNewPostText = (text) => {
   return {
@@ -58,12 +66,32 @@ export const updateNewPostText = (text) => {
   }
 };
 
-//thunkCreators
+// =======================
+// ---- thunkCreators ----
+// =======================
 export const Thunks = {
   getProfile: (userId) => (dispatch) => {
     profileAPI.getProfile(userId)
       .then(data => {
         dispatch(setUserProfile({ ...data, photoUrl: Volodymyr }));
+      });
+  },
+
+  // TODO: add to console.log time of printing
+  getStatus: (userId) => (dispatch) => {
+    profileAPI.getProfileStatus(userId)
+      .then(data => {
+        console.log(`Thunks getProfileStatus at  ${data}`)
+        dispatch(setUserStatus(data));
+      });
+  },
+  updateStatus: (status) => (dispatch) => {
+    profileAPI.updateProfileStatus(status)
+      .then(response => {
+        console.log(response);
+        if ( response.data.resultCode === 0 ) {
+          dispatch(setUserStatus(status));
+        }
       });
   }
 }

@@ -39,13 +39,13 @@ const newsReducer = (state = initialState, action) => {
   return state;
 };
 
- const sendMessageCreator = () => ({ type: SEND_MESSAGE, });
+// const sendMessageCreator = () => ({ type: SEND_MESSAGE, });
 
- const updateNewMessageBodyCreator = (text) => {
+/* const updateNewMessageBodyCreator = (text) => {
   return {
     type: UPDATE_NEW_MESSAGE_BODY,
     body: text,
   }
-};
+};*/
 
 export default newsReducer;

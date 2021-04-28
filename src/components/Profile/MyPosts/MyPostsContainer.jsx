@@ -3,11 +3,11 @@ import {addPost, updateNewPostText} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
 
-function MyPostsContainer(props) {
+export function MyPostsContainer(props) {
 
   let state = props.store.getState();
 
-  let addPost = () => {
+  let addPostNew = () => {
     props.store.dispatch(addPost());
   }
 
@@ -17,7 +17,7 @@ function MyPostsContainer(props) {
   return (
     <MyPosts posts={state.profilePage.posts}
              newPostText={state.profilePage.newPostText}
-             addPost={addPost}
+             addPost={addPostNew}
              updateTextArea={updateTextArea}/>
   )
 }

@@ -16,18 +16,28 @@ export const usersAPI = {
 }
 
 export const profileAPI = {
-  async getProfile(userId = 2) {
+  async getProfile(userId = 12185) {
     let response = await instanceSamuraijs.get(`profile/${ userId }`);
+    return response.data;
+  },
+
+  async getProfileStatus(userId = 12185) {
+    let response = await instanceSamuraijs.get(`profile/status/${ userId }`);
+    return response.data;
+  },
+
+  async updateProfileStatus(status) {
+    let response = await instanceSamuraijs.put(`profile/status/`, { status });
     return response.data;
   }
 }
 
 export const followAPI = {
   postFollow(id) {
-    return instanceSamuraijs.post(`follow/${id}`).then(resp => resp.data);
+    return instanceSamuraijs.post(`follow/${ id }`).then(resp => resp.data);
   },
   deleteFollow(id) {
-    return instanceSamuraijs.delete(`follow/${id}`).then(resp => resp.data);
+    return instanceSamuraijs.delete(`follow/${ id }`).then(resp => resp.data);
   }
 }
 

@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 
 class ProfileStatusMessage extends Component {
   state = {
-    editMode: false
+    editMode: false,
+    status: this.props.status,
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if ( prevProps.status !== this.props.status ){
+      this.setState({
+        status: this.props.status,
+      })
+    }
   }
 
   handleActivateEditMode = () => {
@@ -11,10 +20,17 @@ class ProfileStatusMessage extends Component {
     })
   }
 
+  handleStatusChange = ({ currentTarget: { value } }) => {
+    this.setState({
+      status: value,
+    })
+  }
+
   handleDeactivateEditMode = () => {
     this.setState({
       editMode: false
-    })
+    });
+    this.props.handleUpdateStatus(this.state.status)
   }
 
   handleFocus = (event) => {
@@ -22,13 +38,15 @@ class ProfileStatusMessage extends Component {
   }
 
   render() {
+    const { editMode, status } = this.state;
     return (
       <div>
         Status:
-        { this.state.editMode
-          ? <div><input onFocus={this.handleFocus}  defaultValue={ this.props.status }/>
-        <button onClick={this.handleDeactivateEditMode}>Save</button></div>
-          : <div><span onDoubleClick={this.handleActivateEditMode}>{ this.props.status }</span></div> }
+        { editMode
+          ? <div><input onFocus={ this.handleFocus } onChange={ this.handleStatusChange } defaultValue={ status }/>
+            <button onClick={ this.handleDeactivateEditMode }>Save</button>
+          </div>
+          : <div><span onDoubleClick={ this.handleActivateEditMode }>{ status || 'No status'}</span></div> }
 
 
       </div>
