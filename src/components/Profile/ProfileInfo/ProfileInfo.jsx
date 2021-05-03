@@ -5,10 +5,7 @@ import backgroundIMG from "../../../assets/images/1282257.jpg";
 
 
 function ProfileInfo(props) {
-/*
-  console.log(props)
-  debugger
-*/
+
   if (!props.profile) return <Loader />
 
   return (

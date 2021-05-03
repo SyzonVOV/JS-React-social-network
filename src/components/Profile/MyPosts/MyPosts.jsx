@@ -1,38 +1,51 @@
-import React from "react";
+import React from 'react';
 // import style from "./MyPosts.module.css";
-import Post from "./Post/Post";
+import { Field, Form, Formik } from 'formik';
+import Post from './Post/Post';
 
 function MyPosts(props) {
 
-  let postsElements = props.posts.map( post => <Post key={post.id} message={post.post} likesCount={post.likesCount}/>  )
+  let postsElements = props.posts.map(post => <Post key={ post.id } message={ post.post }
+                                                    likesCount={ post.likesCount }/>);
 
-  let newPostElement = React.createRef();
-
-  let onAddPost = () => {
-    props.addPost();
-  }
-
-  let onPostChange = () => {
-    let newTextArea = newPostElement.current.value;
-    props.updateTextArea(newTextArea);
-  }
   return (
-    <div>
+    <>
       <div>
-        My posts
-        <div>
-          <div><textarea ref={ newPostElement } onChange={ onPostChange } cols="30" rows="10" value={ props.newPostText }/></div>
-          <div><button onClick={ onAddPost }>Add post</button></div>
-        </div>
+        <TextAreaForm addPost={ props.addPost }/>
       </div>
       <div>
-        All posts
+        <h2>All posts</h2>
         { postsElements }
       </div>
       <br/>
-      <p>Main content</p>
-    </div>
-  )
+    </>
+  );
 }
+
+const TextAreaForm = (props) => (
+  <div className="form-container">
+    <h2>My posts</h2>
+
+    <Formik
+      initialValues={ { post: '' } }
+      onSubmit={ ({ post }, actions) => {
+        props.addPost(post);
+        actions.setSubmitting(false);
+        actions.resetForm();
+      } }
+    >
+      { ({ isSubmitting }) => (
+        <Form>
+          <Field component="textarea" name="post" rows="5" cols="50"/>
+          <div className="button-container">
+            <button className="button--submit" type="submit" disabled={ isSubmitting }>
+              Save
+            </button>
+          </div>
+        </Form>
+      ) }
+    </Formik>
+  </div>
+);
 
 export default MyPosts;

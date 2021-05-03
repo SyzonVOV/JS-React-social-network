@@ -34,7 +34,7 @@ const mapDispatchToProps = {
   getUserStatus: Thunks.getStatus,
   updateUserStatus: Thunks.updateStatus,
 }
-// TODO: why auth always says login, even if I'm logged
+// FIXME: why auth always says login, even if I'm logged
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withRouter,

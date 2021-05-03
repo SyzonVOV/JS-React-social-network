@@ -27,7 +27,7 @@ const authReducer = (state = initialState, action) => {
 
 };
 
-const setAuthUserData = (id, email, login) => ({ type: SET_USER_DATA, data: {id, email, login} });
+const setAuthUserData = (id, email, login = "User") => ({ type: SET_USER_DATA, data: {id, email, login} });
 
 //Thunks creators
 export const Thunks = {
@@ -37,6 +37,16 @@ export const Thunks = {
         if ( data.resultCode === 0 ) {
           let {id, email, login} = data.data;
           dispatch(setAuthUserData(id, email, login));
+        }
+      });
+  },
+  loginUser: (email, password, remember) => (dispatch) => {
+    console.log(email, password, remember)
+    authAPI.login(email, password, remember)
+      .then(data => {
+        if ( data.resultCode === 0 ) {
+          let {userId} = data.data;
+          dispatch(setAuthUserData(userId, email));
         }
       });
   }

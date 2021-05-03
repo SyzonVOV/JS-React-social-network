@@ -1,15 +1,44 @@
+:root {
+
+    --gray-800: #2d3748;
+    --gray-700: #4a5568;
+}
+
 .app-wrapper-content {
-  margin: 0px 150px;
-  margin-top: 90px;
-  background-color: #DCEED1;
+    margin: 0 150px;
+    margin-top: 90px;
+    background-color: #DCEED1;
 }
 
 .active {
-  color: khaki;
+    color: khaki;
 }
 
 .image-loader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+
+.button--submit {
+    margin-top: 0.3rem;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    background-color: var(--gray-700);
+    border: 2px solid var(--gray-700);
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.button--submit:hover {
+    background-color: var(--gray-800);
 }

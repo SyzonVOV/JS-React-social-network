@@ -1,6 +1,6 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 let mapStateToPropsForRedirect = (state) => ({
   isAuth: state.auth.isAuth,
@@ -17,11 +17,10 @@ export const withAuthCheck = (WrappedComponent) => {
   }
   WithRedirect.displayName = `WithRedirect(${getDisplayName(WrappedComponent)})`;
 
-  let WithAuthCheckComponent = connect(mapStateToPropsForRedirect)(WithRedirect);
-
-  return WithAuthCheckComponent;
+  return connect(mapStateToPropsForRedirect)(WithRedirect);
 }
 
 function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
+

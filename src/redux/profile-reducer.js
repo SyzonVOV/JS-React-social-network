@@ -2,7 +2,6 @@ import { profileAPI } from "../api/api";
 import Volodymyr from "../assets/images/Volodymyr_the_Great.jpg";
 
 const APP_POST = 'APP-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
 const SET_STATUS = 'SET-STATUS';
 
@@ -16,7 +15,6 @@ let initialState = {
     { id: 5, post: 'Number 5', likesCount: 8 },
   ],
 
-  newPostText: '',
   profile: null,
   status: '',
 };
@@ -27,17 +25,12 @@ const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case APP_POST:
       let newPost = {
-        id: 6,
-        post: stateCopy.newPostText,
+        id: Date.now(),
+        post: action.payload,
         likesCount: 0
       };
       stateCopy.posts = [...state.posts]
       stateCopy.posts.push(newPost);
-      stateCopy.newPostText = '';
-      return stateCopy;
-
-    case UPDATE_NEW_POST_TEXT:
-      stateCopy.newPostText = action.newText;
       return stateCopy;
 
     case SET_USER_PROFILE:
@@ -55,16 +48,10 @@ const profileReducer = (state = initialState, action) => {
 // ========================
 // ---- actionCreators ----
 // ========================
-export const addPost = () => ({ type: APP_POST });
+export const addPost = (payload) => ({ type: APP_POST, payload });
 const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
 const setUserStatus = (payload) => ({ type: SET_STATUS, payload });
 
-export const updateNewPostText = (text) => {
-  return {
-    type: UPDATE_NEW_POST_TEXT,
-    newText: text,
-  }
-};
 
 // =======================
 // ---- thunkCreators ----
