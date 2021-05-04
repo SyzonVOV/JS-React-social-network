@@ -1,5 +1,5 @@
 import { addPost } from '../../../redux/profile-reducer';
-import MyPosts from './MyPosts';
+import UserPosts from './UserPosts';
 import { connect } from 'react-redux';
 
 
@@ -17,6 +17,6 @@ let mapDispatchToProps = (dispatch) => {
   }
 };
 
-const SuperMyPostContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)
+const SuperMyPostContainer = connect(mapStateToProps, mapDispatchToProps)(UserPosts)
 
 export default SuperMyPostContainer;

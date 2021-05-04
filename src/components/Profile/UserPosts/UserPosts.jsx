@@ -1,9 +1,9 @@
 import React from 'react';
-// import style from "./MyPosts.module.css";
+// import style from "./UserPosts.module.css";
 import { Field, Form, Formik } from 'formik';
 import Post from './Post/Post';
 
-function MyPosts(props) {
+function UserPosts(props) {
 
   let postsElements = props.posts.map(post => <Post key={ post.id } message={ post.post }
                                                     likesCount={ post.likesCount }/>);
@@ -48,4 +48,4 @@ const TextAreaForm = (props) => (
   </div>
 );
 
-export default MyPosts;
+export default UserPosts;
