@@ -46,9 +46,13 @@ export const authAPI = {
     let response = await instanceSamuraijs.get(`auth/me`);
     return response.data;
   },
-  async login(email, password, remember) {
-    console.log('login api')
+  async login(email, password, remember = false) {
+    console.log('login api');
     let response = await instanceSamuraijs.post(`/auth/login`, { email, password, remember });
+    return response.data;
+  },
+  async logout() {
+    let response = await instanceSamuraijs.delete(`/auth/login`);
     return response.data;
   }
 }

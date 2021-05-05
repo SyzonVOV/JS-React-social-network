@@ -21,4 +21,7 @@ const mapStateToProps = (state) => ({
   login: state.auth.login,
 });
 
-export default connect(mapStateToProps, {getAuthUserData: Thunks.getAuthUserData} )(HeaderContainer);
+export default connect(mapStateToProps, {
+  getAuthUserData: Thunks.getAuthUserData,
+  handleLogout: Thunks.logoutUser,
+} )(HeaderContainer);

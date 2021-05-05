@@ -17,8 +17,7 @@ const authReducer = (state = initialState, action) => {
     case SET_USER_DATA:
       return {
         ...state,
-        ...action.data,
-        isAuth: true,
+        ...action.payload,
       };
 
     default:
@@ -27,7 +26,7 @@ const authReducer = (state = initialState, action) => {
 
 };
 
-const setAuthUserData = (id, email, login = "User") => ({ type: SET_USER_DATA, data: {id, email, login} });
+const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, payload: {id, email, login, isAuth} });
 
 //Thunks creators
 export const Thunks = {
@@ -36,17 +35,23 @@ export const Thunks = {
       .then(data => {
         if ( data.resultCode === 0 ) {
           let {id, email, login} = data.data;
-          dispatch(setAuthUserData(id, email, login));
+          dispatch(setAuthUserData(id, email, login, true));
         }
       });
   },
   loginUser: (email, password, remember) => (dispatch) => {
-    console.log(email, password, remember)
     authAPI.login(email, password, remember)
       .then(data => {
         if ( data.resultCode === 0 ) {
-          let {userId} = data.data;
-          dispatch(setAuthUserData(userId, email));
+          dispatch(Thunks.getAuthUserData());
+        }
+      });
+  },
+  logoutUser: () => (dispatch) => {
+    authAPI.logout()
+      .then(data => {
+        if ( data.resultCode === 0 ) {
+          dispatch(setAuthUserData(null, null, null, false));
         }
       });
   }
