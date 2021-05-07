@@ -31,7 +31,7 @@ const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, pa
 //Thunks creators
 export const Thunks = {
   getAuthUserData: () => (dispatch) => {
-    authAPI.authMe()
+    return authAPI.authMe()
       .then(data => {
         if ( data.resultCode === 0 ) {
           let {id, email, login} = data.data;

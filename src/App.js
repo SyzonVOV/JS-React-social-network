@@ -11,26 +11,44 @@ import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
+import { connect } from 'react-redux';
+import { Thunks } from './redux/app-reducer';
+import Loader from './components/common/Loader';
 
-function App() {
-  return (
+class App extends React.Component {
+
+  componentDidMount() {
+    this.props.getInitialized();
+  }
+
+  render() {
+    const {init} = this.props
+    if ( !init ) return <Loader/>
+    return (
       <div>
-        <HeaderContainer />
-        <NavbarLeft />     
-          <div className='app-wrapper-content'>
-            <Route path='/dialogs'>
-              <SuperDialogsContainer />
-            </Route>
-            <Route path='/login' component={Login}/>
-            <Route path='/profile/:userId?' render={ () => <ProfileContainer/> } />
-            <Route path='/users' render={ () => <UsersContainer/> } />
-            <Route path='/news' component={News}/>
-            <Route path='/music' component={Music}/>
-            <Route path='/settings' component={Settings}/>
-          </div>
-        <NavbarRight />
+        <HeaderContainer/>
+        <NavbarLeft/>
+        <div className="app-wrapper-content">
+          <Route path="/dialogs">
+            <SuperDialogsContainer/>
+          </Route>
+          <Route path="/login" component={ Login }/>
+          <Route path="/profile/:userId?" render={ () => <ProfileContainer/> }/>
+          <Route path="/users" render={ () => <UsersContainer/> }/>
+          <Route path="/news" component={ News }/>
+          <Route path="/music" component={ Music }/>
+          <Route path="/settings" component={ Settings }/>
+        </div>
+        <NavbarRight/>
       </div>
-  );
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  init: state.app.initialized,
+})
+
+export default connect(mapStateToProps, {
+  getInitialized: Thunks.getInitializeApp,
+} )(App);
