@@ -5,6 +5,7 @@ import Users from "./Users";
 import Loader from "../common/Loader";
 import { withAuthCheck } from "../_HOC/AuthRedirectHOC";
 import { compose } from "redux";
+import userSelectors from '../../redux/selectors/users-selector';
 
 
 class UsersAPIComponent extends React.Component {
@@ -59,8 +60,8 @@ class UsersAPIComponent extends React.Component {
     </>
   }
 }
-
-const mapStateToProps = (state) => {
+// lesson 81 start to use selectors to retrieve date from state
+/*const mapStateToProps = (state) => {
   return {
     users: state.usersPage.users,
     pageSize: state.usersPage.pageSize,
@@ -69,7 +70,18 @@ const mapStateToProps = (state) => {
     isFetching: state.usersPage.isFetching,
     followingInProgress: state.usersPage.followingInProgress,
   }
+}*/
+const mapStateToProps = (state) => {
+  return {
+    users: userSelectors.selectAllUsers(state),
+    pageSize: userSelectors.selectPageSize(state),
+    totalUsersCount: userSelectors.selectQuantityOfUsers(state),
+    currentPage: userSelectors.selectCurrentPage(state),
+    isFetching: userSelectors.selectIsFetching(state),
+    followingInProgress: userSelectors.selectFollowingInProgress(state),
+  }
 }
+
 
 //first version of mapDispatchToProps` code
 /*const mapDispatchToProps = (dispatch) => {
