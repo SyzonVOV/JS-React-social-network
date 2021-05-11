@@ -3,23 +3,26 @@ import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import Post from './Post/Post';
 
-function UserPosts(props) {
+class UserPosts extends React.Component {
 
-  let postsElements = props.posts.map(post => <Post key={ post.id } message={ post.post }
-                                                    likesCount={ post.likesCount }/>);
+  render() {
 
-  return (
-    <>
-      <div>
-        <TextAreaForm addPost={ props.addPost }/>
-      </div>
-      <div>
-        <h2>All posts</h2>
-        { postsElements }
-      </div>
-      <br/>
-    </>
-  );
+    let postsElements = this.props.posts.map(post => <Post key={ post.id } message={ post.post }
+                                                           likesCount={ post.likesCount }/>);
+
+    return (
+      <>
+        <div>
+          <TextAreaForm addPost={ this.props.addPost }/>
+        </div>
+        <div>
+          <h2>All posts</h2>
+          { postsElements }
+        </div>
+        <br/>
+      </>
+    );
+  }
 }
 
 const TextAreaForm = (props) => (

@@ -1,7 +1,8 @@
-import { profileAPI } from "../api/api";
-import Volodymyr from "../assets/images/Volodymyr_the_Great.jpg";
+import { profileAPI } from '../api/api';
+import Volodymyr from '../assets/images/Volodymyr_the_Great.jpg';
 
 const APP_POST = 'APP-POST';
+const DEL_POST = 'DEL_POST';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
 const SET_STATUS = 'SET-STATUS';
 
@@ -9,7 +10,7 @@ let initialState = {
   posts: [
     { id: 1, post: 'Hi, how are you?', likesCount: 38 },
     { id: 11, post: 'Ha-h!', likesCount: 38 },
-    { id: 2, post: "It's a nice day, isn't it?", likesCount: 12 },
+    { id: 2, post: 'It\'s a nice day, isn\'t it?', likesCount: 12 },
     { id: 3, post: 'Wie gehts es dir?', likesCount: 58 },
     { id: 4, post: 'Wie heißt du?', likesCount: 15 },
     { id: 5, post: 'Number 5', likesCount: 8 },
@@ -21,17 +22,21 @@ let initialState = {
 
 
 const profileReducer = (state = initialState, action) => {
-  let stateCopy = { ...state }
+  let stateCopy = { ...state };
   switch (action.type) {
     case APP_POST:
       let newPost = {
         id: Date.now(),
         post: action.payload,
-        likesCount: 0
+        likesCount: 0,
       };
-      stateCopy.posts = [...state.posts]
+      stateCopy.posts = [...state.posts];
       stateCopy.posts.push(newPost);
       return stateCopy;
+
+    case DEL_POST:
+      return { ...state,
+         posts: state.posts.filter(value => value.id !== action.payload) };
 
     case SET_USER_PROFILE:
       return { ...state, profile: action.profile };
@@ -49,6 +54,7 @@ const profileReducer = (state = initialState, action) => {
 // ---- actionCreators ----
 // ========================
 export const addPost = (payload) => ({ type: APP_POST, payload });
+export const delPost = (payload) => ({ type: DEL_POST, payload });
 const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
 const setUserStatus = (payload) => ({ type: SET_STATUS, payload });
 
@@ -68,7 +74,7 @@ export const Thunks = {
   getStatus: (userId) => (dispatch) => {
     profileAPI.getProfileStatus(userId)
       .then(data => {
-        console.log(`Thunks getProfileStatus at  ${data}`)
+        console.log(`Thunks getProfileStatus at  ${ data }`);
         dispatch(setUserStatus(data));
       });
   },
@@ -80,8 +86,8 @@ export const Thunks = {
           dispatch(setUserStatus(status));
         }
       });
-  }
-}
+  },
+};
 
 
 export default profileReducer;
