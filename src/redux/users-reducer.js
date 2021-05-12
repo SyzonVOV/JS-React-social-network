@@ -1,13 +1,13 @@
-import { followAPI, usersAPI } from "../api/api";
-import Volodymyr from "../assets/images/Volodymyr_the_Great.jpg";
+import { followAPI, usersAPI } from '../api/api';
+import Volodymyr from '../assets/images/Volodymyr_the_Great.jpg';
 
-const FOLLOW = 'FOLLOW';
-const UNFOLLOW = 'UNFOLLOW';
-const SET_USERS = 'SET-USERS';
-const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
-const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
-const TOGGLE_FOLLOWING_PROGRESS = 'TOGGLE_FOLLOWING_PROGRESS';
+const FOLLOW = 'user/FOLLOW';
+const UNFOLLOW = 'user/UNFOLLOW';
+const SET_USERS = 'user/SET-USERS';
+const SET_TOTAL_USERS_COUNT = 'user/SET_TOTAL_USERS_COUNT';
+const SET_CURRENT_PAGE = 'user/SET_CURRENT_PAGE';
+const TOGGLE_IS_FETCHING = 'user/TOGGLE_IS_FETCHING';
+const TOGGLE_FOLLOWING_PROGRESS = 'user/TOGGLE_FOLLOWING_PROGRESS';
 
 
 let initialState = {
@@ -28,10 +28,10 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         users: state.users.map(user => {
           if ( user.id === action.userID ) {
-            return { ...user, followed: true }
+            return { ...user, followed: true };
           }
           return user;
-        })
+        }),
       };
 
     case UNFOLLOW:
@@ -39,43 +39,43 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         users: state.users.map(user => {
           if ( user.id === action.userID ) {
-            return { ...user, followed: false }
+            return { ...user, followed: false };
           }
           return user;
-        })
+        }),
       };
 
     case SET_USERS:
       return {
         ...state,
-        users: [ ...action.users ]
-      }
+        users: [...action.users],
+      };
 
     case SET_TOTAL_USERS_COUNT:
       return {
         ...state,
         totalUsersCount: action.totalUsersCount,
-      }
+      };
 
     case SET_CURRENT_PAGE:
       return {
         ...state,
         currentPage: action.currentPage,
-      }
+      };
 
     case TOGGLE_IS_FETCHING:
       return {
         ...state,
         isFetching: action.isFetching,
-      }
+      };
 
     case TOGGLE_FOLLOWING_PROGRESS:
       return {
         ...state,
         followingInProgress: action.isFetching
-        ? [...state.followingInProgress, action.userId]
-        : state.followingInProgress.filter(id => id !== action.userId),
-      }
+          ? [...state.followingInProgress, action.userId]
+          : state.followingInProgress.filter(id => id !== action.userId),
+      };
 
     default:
       return state;
@@ -88,14 +88,18 @@ export const followSuccess = (userID) => ({ type: FOLLOW, userID });
 export const unfollowSuccess = (userID) => {
   return {
     type: UNFOLLOW,
-    userID
-  }
+    userID,
+  };
 };
 export const setUsers = (users) => ({ type: SET_USERS, users });
 export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
 export const setTotalUsersCount = (totalUsersCount) => ({ type: SET_TOTAL_USERS_COUNT, totalUsersCount });
 export const setIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching });
-export const toggleFollowingProgress = (isFetching, userId) => ({ type: TOGGLE_FOLLOWING_PROGRESS, isFetching, userId });
+export const toggleFollowingProgress = (isFetching, userId) => ({
+  type: TOGGLE_FOLLOWING_PROGRESS,
+  isFetching,
+  userId,
+});
 
 //thunkCreators
 export const getUsersTh = (currentPage, pageSize) => (dispatch) => {
@@ -104,11 +108,12 @@ export const getUsersTh = (currentPage, pageSize) => (dispatch) => {
     .then(data => {
       dispatch(setIsFetching(false));
       dispatch(setUsers(data.items.map(item => {
-        return { ...item, photoUrl: Volodymyr }
+        return { ...item, photoUrl: Volodymyr };
       })));
       dispatch(setTotalUsersCount(data.totalCount));
-    });
-}
+    })
+    .catch(err => console.log(err));
+};
 
 export const followTh = (userId) => (dispatch) => {
   dispatch(toggleFollowingProgress(true, userId));
@@ -118,7 +123,7 @@ export const followTh = (userId) => (dispatch) => {
       dispatch(toggleFollowingProgress(false, userId));
     })
     .catch(err => console.log(err));
-}
+};
 
 export const unfollowTh = (userId) => (dispatch) => {
   dispatch(toggleFollowingProgress(true, userId));
@@ -128,6 +133,6 @@ export const unfollowTh = (userId) => (dispatch) => {
       dispatch(toggleFollowingProgress(false, userId));
     })
     .catch(err => console.log(err));
-}
+};
 
 export default usersReducer;

@@ -1,16 +1,16 @@
 import React from 'react';
-import {Route} from "react-router-dom";
+import { Route } from 'react-router-dom';
 import './App.css';
-import NavbarLeft from "./components/NavbarLeft/NavbarLeft";
-import NavbarRight from "./components/NavbarRight/NavbarRight";
-import News from "./components/News/News";
-import Music from "./components/Music/Music";
-import Settings from "./components/Settings/Settings";
-import SuperDialogsContainer from "./components/Dialogs/DialogsContainer";
-import UsersContainer from "./components/Users/UsersContainer";
-import ProfileContainer from "./components/Profile/ProfileContainer";
-import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
+import NavbarLeft from './components/NavbarLeft/NavbarLeft';
+import NavbarRight from './components/NavbarRight/NavbarRight';
+import News from './components/News/News';
+import Music from './components/Music/Music';
+import Settings from './components/Settings/Settings';
+import SuperDialogsContainer from './components/Dialogs/DialogsContainer';
+import UsersContainer from './components/Users/UsersContainer';
+import ProfileContainer from './components/Profile/ProfileContainer';
+import HeaderContainer from './components/Header/HeaderContainer';
+import Login from './components/Login/Login';
 import { connect } from 'react-redux';
 import { Thunks } from './redux/app-reducer';
 import Loader from './components/common/Loader';
@@ -22,8 +22,8 @@ class App extends React.Component {
   }
 
   render() {
-    const {init} = this.props
-    if ( !init ) return <Loader/>
+    const { init } = this.props;
+    if ( !init ) return <Loader/>;
     return (
       <div>
         <HeaderContainer/>
@@ -47,8 +47,8 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   init: state.app.initialized,
-})
+});
 
 export default connect(mapStateToProps, {
   getInitialized: Thunks.getInitializeApp,
-} )(App);
+})(App);

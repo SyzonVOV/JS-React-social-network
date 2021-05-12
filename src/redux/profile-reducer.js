@@ -1,10 +1,10 @@
 import { profileAPI } from '../api/api';
 import Volodymyr from '../assets/images/Volodymyr_the_Great.jpg';
 
-const APP_POST = 'APP-POST';
-const DEL_POST = 'DEL_POST';
-const SET_USER_PROFILE = 'SET-USER-PROFILE';
-const SET_STATUS = 'SET-STATUS';
+const APP_POST = 'prof/APP-POST';
+const DEL_POST = 'prof/DEL_POST';
+const SET_USER_PROFILE = 'prof/SET-USER-PROFILE';
+const SET_STATUS = 'prof/SET-STATUS';
 
 let initialState = {
   posts: [

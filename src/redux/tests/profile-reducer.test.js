@@ -11,8 +11,8 @@ const initialState = {
   ],
 };
 
-describe('tests for profile-reduser ', () => {
-  
+describe('tests for profile-reducer ', () => {
+
    test('after action addPost quantity of the post increased', () => {
     const initialLength = initialState.posts.length;
     const action = addPost('new post from test');
