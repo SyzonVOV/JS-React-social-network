@@ -27,4 +27,9 @@
 
 .selected {
     font-weight: bold;
+    border-color: black;
+}
+
+.paginator {
+    margin: 10px;
 }
