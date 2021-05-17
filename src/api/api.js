@@ -29,7 +29,17 @@ export const profileAPI = {
   async updateProfileStatus(status) {
     let response = await instanceSamuraijs.put(`profile/status/`, { status });
     return response.data;
-  }
+  },
+
+  async updateAvatar(file) {
+    let formData = new FormData();
+    formData.append('image', file)
+    let response = await instanceSamuraijs.put(`profile/photo`, formData, {
+      headers: {
+        'Content-Type': `multipart/form-data`
+      }});
+    return response.data;
+  },
 }
 
 export const followAPI = {

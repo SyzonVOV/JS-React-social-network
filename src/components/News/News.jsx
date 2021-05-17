@@ -1,15 +1,13 @@
-import React from "react";
+import React from 'react';
 //import style from "./News.module.css";
-import StoreContext from "../../StoreContext";
+import { connect } from 'react-redux';
 
 function TheNewsContainer(props) {
-  let news = props.state.news;
-  let newsElements = news.map( news => <TheNews title={news.title}
-                                                news={news.news}
-                                                key={news.id}
-                                                likes={news.likes}/> )
-
-  return newsElements
+  let news = props.news;
+  return news.map(news => <TheNews title={ news.title }
+                                   news={ news.news }
+                                   key={ news.id }
+                                   likes={ news.likes }/>)
 
 }
 
@@ -25,15 +23,16 @@ function TheNews(props) {
   )
 }
 
-function News() {
+function News(props) {
   return (
     <div>
       <h1>News</h1>
-      <StoreContext.Consumer>
-        { store => <TheNewsContainer state={store.getState().newsPage}/> }
-      </StoreContext.Consumer>
+      <TheNewsContainer news={props.news}/>
     </div>
   )
 }
 
-export default News;
+const mapStateToProps = (state) => ({
+  news: state.newsPage.news
+})
+export default connect(mapStateToProps)(News);

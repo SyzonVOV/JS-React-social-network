@@ -5,6 +5,7 @@ const APP_POST = 'prof/APP-POST';
 const DEL_POST = 'prof/DEL_POST';
 const SET_USER_PROFILE = 'prof/SET-USER-PROFILE';
 const SET_STATUS = 'prof/SET-STATUS';
+const SAVE_AVATAR = 'prof/SAVE_AVATAR';
 
 let initialState = {
   posts: [
@@ -35,14 +36,19 @@ const profileReducer = (state = initialState, action) => {
       return stateCopy;
 
     case DEL_POST:
-      return { ...state,
-         posts: state.posts.filter(value => value.id !== action.payload) };
+      return {
+        ...state,
+        posts: state.posts.filter(value => value.id !== action.payload),
+      };
 
     case SET_USER_PROFILE:
       return { ...state, profile: action.profile };
 
     case SET_STATUS:
       return { ...state, status: action.payload };
+
+    case SAVE_AVATAR:
+      return { ...state, profile: {...state.profile, photos: action.payload} };
 
     default:
       return stateCopy;
@@ -57,6 +63,7 @@ export const addPost = (payload) => ({ type: APP_POST, payload });
 export const delPost = (payload) => ({ type: DEL_POST, payload });
 const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
 const setUserStatus = (payload) => ({ type: SET_STATUS, payload });
+const setAvatarSuccess = (payload) => ({ type: SAVE_AVATAR, payload });
 
 
 // =======================
@@ -74,16 +81,23 @@ export const Thunks = {
   getStatus: (userId) => (dispatch) => {
     profileAPI.getProfileStatus(userId)
       .then(data => {
-        console.log(`Thunks getProfileStatus at  ${ data }`);
         dispatch(setUserStatus(data));
       });
   },
   updateStatus: (status) => (dispatch) => {
     profileAPI.updateProfileStatus(status)
       .then(response => {
-        console.log(response);
         if ( response.data.resultCode === 0 ) {
           dispatch(setUserStatus(status));
+        }
+      });
+  },
+  updateAvatar: (file) => (dispatch) => {
+    profileAPI.updateAvatar(file)
+      .then(response => {
+        console.log(response);
+        if ( response.data.resultCode === 0 ) {
+          dispatch(setAvatarSuccess(response.data.data.photos));
         }
       });
   },
