@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Users.module.css';
 import { NavLink } from 'react-router-dom';
-import useTraceUpdate from '../../handlers/whyRerender';
+import useTraceUpdate from '../../utils/whyRerender';
 
 const Paginator = (props) => {
   useTraceUpdate(props)

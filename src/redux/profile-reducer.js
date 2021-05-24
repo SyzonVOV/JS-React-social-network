@@ -95,6 +95,14 @@ export const Thunks = {
   updateAvatar: (file) => (dispatch) => {
     profileAPI.updateAvatar(file)
       .then(response => {
+        if ( response.data.resultCode === 0 ) {
+          dispatch(setAvatarSuccess(response.data.data.photos));
+        }
+      });
+  },
+  updateProfileInfo: (values) => (dispatch) => {
+    profileAPI.updateProfileInfo(values)
+      .then(response => {
         console.log(response);
         if ( response.data.resultCode === 0 ) {
           dispatch(setAvatarSuccess(response.data.data.photos));

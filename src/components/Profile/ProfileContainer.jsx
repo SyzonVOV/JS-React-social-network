@@ -60,6 +60,7 @@ const mapDispatchToProps = {
   getUserStatus: Thunks.getStatus,
   updateUserStatus: Thunks.updateStatus,
   downloadPhoto: Thunks.updateAvatar,
+  updateProfileInfo: Thunks.updateProfileInfo,
 };
 // FIXME: why auth always says login, even if I'm logged
 export default compose(

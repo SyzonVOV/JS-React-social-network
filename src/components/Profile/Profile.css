@@ -1,4 +1,5 @@
 .landing__avatar {
-    max-width: 75px;
+    max-width: 100px;
     border-radius: 50%;
+    cursor: pointer;
 }

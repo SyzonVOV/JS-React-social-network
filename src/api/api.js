@@ -40,6 +40,10 @@ export const profileAPI = {
       }});
     return response.data;
   },
+  async updateProfileInfo(value) {
+    let response = await instanceSamuraijs.put(`profile`, value );
+    return response.data;
+  },
 }
 
 export const followAPI = {

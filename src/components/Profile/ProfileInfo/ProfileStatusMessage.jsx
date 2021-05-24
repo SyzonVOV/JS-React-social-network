@@ -41,12 +41,12 @@ class ProfileStatusMessage extends Component {
     const { editMode, status } = this.state;
     return (
       <div>
-        Status:
+        <b>Status: </b>
         { editMode
-          ? <div><input onFocus={ this.handleFocus } onChange={ this.handleStatusChange } defaultValue={ status }/>
+          ? <><input onFocus={ this.handleFocus } onChange={ this.handleStatusChange } defaultValue={ status }/>
             <button onClick={ this.handleDeactivateEditMode }>Save</button>
-          </div>
-          : <div><span onDoubleClick={ this.handleActivateEditMode }>{ status || 'No status'}</span></div> }
+          </>
+          : <><span onDoubleClick={ this.handleActivateEditMode }>{ status || 'No status'}</span></> }
 
 
       </div>

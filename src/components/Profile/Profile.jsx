@@ -8,7 +8,7 @@ function Profile(props) {
   return (
     <div>
       <ProfileInfo profile={ props.profile } status={ props.status } handleUpdateStatus={ props.updateUserStatus }
-                   isOwner={ props.isOwner } downloadPhoto={ props.downloadPhoto}/>
+                   isOwner={ props.isOwner } downloadPhoto={ props.downloadPhoto} updateProfileInfo={ props.updateProfileInfo}/>
       <SuperMyPostContainer/>
     </div>
   );
