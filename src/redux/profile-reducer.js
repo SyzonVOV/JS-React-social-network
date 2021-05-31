@@ -1,5 +1,6 @@
 import { profileAPI } from '../api/api';
 import Volodymyr from '../assets/images/Volodymyr_the_Great.jpg';
+import { objIterationWithReplacement } from '../utils/helpers';
 
 const APP_POST = 'prof/APP-POST';
 const DEL_POST = 'prof/DEL_POST';
@@ -48,7 +49,7 @@ const profileReducer = (state = initialState, action) => {
       return { ...state, status: action.payload };
 
     case SAVE_AVATAR:
-      return { ...state, profile: {...state.profile, photos: action.payload} };
+      return { ...state, profile: { ...state.profile, photos: action.payload } };
 
     default:
       return stateCopy;
@@ -70,11 +71,15 @@ const setAvatarSuccess = (payload) => ({ type: SAVE_AVATAR, payload });
 // ---- thunkCreators ----
 // =======================
 export const Thunks = {
-  getProfile: (userId) => (dispatch) => {
-    profileAPI.getProfile(userId)
-      .then(data => {
-        dispatch(setUserProfile({ ...data, photoUrl: Volodymyr }));
-      });
+  getProfile(userId) {
+    return function (dispatch) {
+      profileAPI.getProfile(userId)
+        .then(data => {
+          const checkedData = objIterationWithReplacement(data, null, '');
+          // console.log(checkedData);
+          dispatch(setUserProfile({ ...checkedData, photoUrl: Volodymyr }));
+        });
+    };
   },
 
   // TODO: add to console.log time of printing
@@ -87,7 +92,7 @@ export const Thunks = {
   updateStatus: (status) => (dispatch) => {
     profileAPI.updateProfileStatus(status)
       .then(response => {
-        if ( response.data.resultCode === 0 ) {
+        if ( response.resultCode === 0 ) {
           dispatch(setUserStatus(status));
         }
       });
@@ -95,19 +100,21 @@ export const Thunks = {
   updateAvatar: (file) => (dispatch) => {
     profileAPI.updateAvatar(file)
       .then(response => {
-        if ( response.data.resultCode === 0 ) {
-          dispatch(setAvatarSuccess(response.data.data.photos));
+        if ( response.resultCode === 0 ) {
+          dispatch(setAvatarSuccess(response.data.photos));
         }
       });
   },
-  updateProfileInfo: (values) => (dispatch) => {
-    profileAPI.updateProfileInfo(values)
-      .then(response => {
-        console.log(response);
-        if ( response.data.resultCode === 0 ) {
-          dispatch(setAvatarSuccess(response.data.data.photos));
-        }
-      });
+  updateProfileInfo(values) {
+    return function (dispatch, getState) {
+      const userId = getState().auth.id;
+      profileAPI.updateProfileInfo(values)
+        .then(response => {
+          if ( response.resultCode === 0 ) {
+            dispatch(Thunks.getProfile(userId));
+          }
+        });
+    };
   },
 };
 
