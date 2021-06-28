@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route,Switch } from 'react-router-dom';
 import './App.css';
 import NavbarLeft from './components/NavbarLeft/NavbarLeft';
 import NavbarRight from './components/NavbarRight/NavbarRight';
@@ -30,9 +30,13 @@ class App extends React.Component {
         <HeaderContainer/>
         <NavbarLeft/>
         <div className="app-wrapper-content">
+          <Switch>
           <Route path="/dialogs">
             <SuperDialogsContainer/>
           </Route>
+          <Redirect exact from="/" to={ this.props.isAuth ?
+            '/profile' :
+            '/login' }/>
           <Route path="/login" component={ Login }/>
           <Route path="/profile/:userId?" render={ () => <ProfileContainer/> }/>
           <Route path="/users" render={ () => <UsersContainer/> }/>
@@ -41,9 +45,10 @@ class App extends React.Component {
             <Route path="/music" component={ Music }/>
             <Route path="/settings" component={ Settings }/>
           </Suspense>
-
+          <Route render={ () => <div>404 Page Not Found</div> }/>
+          </Switch>
         </div>
-          <NavbarRight/>
+        <NavbarRight/>
       </div>
     );
   }
@@ -51,6 +56,7 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   init: state.app.initialized,
+  isAuth: state.auth.isAuth,
 });
 
 export default connect(mapStateToProps, {
