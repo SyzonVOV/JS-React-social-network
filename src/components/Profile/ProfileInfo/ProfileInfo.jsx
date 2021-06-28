@@ -4,6 +4,7 @@ import ProfileStatusMessage from './ProfileStatusMessage';
 import backgroundIMG from '../../../assets/images/1282257.jpg';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { checkObjHasTrueValues } from '../../../utils/helpers';
+import { profileAPI } from '../../../api/api';
 
 
 function ProfileInfo(props) {
@@ -34,7 +35,8 @@ function ProfileInfo(props) {
         <ProfileStatusMessage status={ props.status } handleUpdateStatus={ props.handleUpdateStatus }/>
 
         { showEditProfileForm && <ProfileDetailsUpdateForm profile={ props.profile }
-                                                           updateProfileInfo={ props.updateProfileInfo }
+                                                           getUserProfile={ props.getUserProfile }
+                                                           authUserID={ props.authUserID }
                                                            showForm={ setShowEditProfileForm }/> }
 
         { !showEditProfileForm && <ProfileDetails profile={ props.profile }
@@ -85,8 +87,9 @@ function ProfileDetailsUpdateForm(props) {
   const {
     profile: {
       lookingForAJob, lookingForAJobDescription, aboutMe, contacts, fullName,
-    }, showForm, updateProfileInfo,
+    }, showForm, getUserProfile, authUserID,
   } = props;
+
   return <div>
     <h2>Change your profile data</h2>
     <Formik
@@ -100,23 +103,32 @@ function ProfileDetailsUpdateForm(props) {
 
       // validationSchema={ SignupSchema }
 
-      onSubmit={ (values, { setSubmitting, resetForm, setErrors }) => {
-        console.log(values);
-        updateProfileInfo(values);
-        showForm(false);
-        /*if ( result.resultCode === 0 ) {
-          // loginUser();
+      onSubmit={ async (values, { setSubmitting, setErrors }) => {
+        setSubmitting(true);
+        try {
+          const result = await profileAPI.updateProfileInfo(values);
+          if ( result.resultCode === 0 ) {
+            getUserProfile(authUserID);
+            showForm(false);
+          }
+          let errMessage = { errorValidFromServ: 'Could you check your form, you have some errors' };
+          result.messages.forEach(errM => {
+            let index = errM.substring(errM.lastIndexOf('>') + 1, errM.lastIndexOf(')')).toLowerCase();
+            errMessage = { ...errMessage, contacts: { ...errMessage.contacts, [index]: errM } };
+          });
+          setErrors(errMessage);
+        } catch (error) {
+          console.error(error);
+        } finally {
           setSubmitting(false);
-          resetForm();
-          showForm(false);
         }
-        setErrors({ errorValidFromServ: result.messages[0] });*/
       }
       }
 
 
     >
-      { ({ isSubmitting, errors: { errorValidFromServ } }) => {
+      { ({ isSubmitting, errors }) => {
+        console.log(errors);
         return (
           <Form className={ 'login-form' }>
             <label htmlFor="fullName">Full Name: </label>
@@ -133,17 +145,18 @@ function ProfileDetailsUpdateForm(props) {
             <label htmlFor="aboutMe">About me: </label>
             <Field component="textarea" rows="5" cols="50" name="aboutMe" placeholder="About me"/>
             <ErrorMessage className={ 'login-form__message-error' } name="aboutMe" component="div"/>
-            { errorValidFromServ }
             <div className="profile-contacts">
               <h3>Contacts</h3>
               <div className="profile-contacts__container">
-                { Object.keys(contacts).map(key => <div key={ key } >
+                { Object.keys(contacts).map(key => <div key={ key }>
                   <label htmlFor={ `contacts.${ key }` }>{ key }: </label>
                   <Field type="text" name={ `contacts.${ key }` } placeholder="Your link"/>
-                </div> ) }
+                  <ErrorMessage className={ 'login-form__message-error' } name={ `contacts.${ key }` } component="div"/>
+                </div>) }
               </div>
             </div>
 
+            <ErrorMessage className={ 'login-form__message-error' } name="errorValidFromServ" component="div"/>
 
             <button className="button--submit" type="submit" disabled={ isSubmitting }>
               Submit

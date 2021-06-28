@@ -7,3 +7,7 @@
 .profile-contacts__container{
     margin-left: 10px;
 }
+
+.login-form__message-error{
+    color: red;
+}

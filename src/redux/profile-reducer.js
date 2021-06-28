@@ -71,8 +71,8 @@ const setAvatarSuccess = (payload) => ({ type: SAVE_AVATAR, payload });
 // ---- thunkCreators ----
 // =======================
 export const Thunks = {
-  getProfile(userId) {
-    return function (dispatch) {
+  getProfile: function (userId) {
+    return (dispatch) => {
       profileAPI.getProfile(userId)
         .then(data => {
           const checkedData = objIterationWithReplacement(data, null, '');
@@ -105,8 +105,8 @@ export const Thunks = {
         }
       });
   },
-  updateProfileInfo(values) {
-    return function (dispatch, getState) {
+  updateProfileInfo: function (values) {
+    return (dispatch, getState) => {
       const userId = getState().auth.id;
       profileAPI.updateProfileInfo(values)
         .then(response => {

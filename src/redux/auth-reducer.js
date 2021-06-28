@@ -1,6 +1,7 @@
-import { authAPI } from "../api/api";
+import { authAPI, securityAPI } from '../api/api';
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
+const GET_CAPTCHA_SUCCESS = 'auth/GET_CAPTCHA_SUCCESS';
 
 let initialState = {
   id: null,
@@ -8,6 +9,7 @@ let initialState = {
   login: null,
   isAuth: false,
   isFetching: false,
+  captchaUrl: null,
 };
 
 
@@ -20,13 +22,20 @@ const authReducer = (state = initialState, action) => {
         ...action.payload,
       };
 
+    case GET_CAPTCHA_SUCCESS:
+      return {
+        ...state,
+        captchaUrl: action.payload,
+      };
+
     default:
       return state;
   }
 
 };
 
-const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, payload: {id, email, login, isAuth} });
+const setAuthUserData = (id, email, login, isAuth) => ({ type: SET_USER_DATA, payload: { id, email, login, isAuth } });
+const setCaptchaUrl = (url) => ({ type: GET_CAPTCHA_SUCCESS, payload: url });
 
 //Thunks creators
 export const Thunks = {
@@ -34,7 +43,7 @@ export const Thunks = {
     return authAPI.authMe()
       .then(data => {
         if ( data.resultCode === 0 ) {
-          let {id, email, login} = data.data;
+          let { id, email, login } = data.data;
           dispatch(setAuthUserData(id, email, login, true));
         }
       });
@@ -44,6 +53,8 @@ export const Thunks = {
       .then(data => {
         if ( data.resultCode === 0 ) {
           dispatch(Thunks.getAuthUserData());
+        } else if ( data.resultCode === 10 ) {
+          dispatch(Thunks.getCaptcha());
         }
       });
   },
@@ -54,7 +65,12 @@ export const Thunks = {
           dispatch(setAuthUserData(null, null, null, false));
         }
       });
-  }
-}
-
+  },
+  getCaptcha: () => (dispatch) => {
+    securityAPI.getCaptchaUrl()
+      .then(data => {
+        dispatch(setCaptchaUrl(data.url));
+      });
+  },
+};
 export default authReducer;

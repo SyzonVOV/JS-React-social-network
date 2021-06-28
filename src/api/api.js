@@ -60,12 +60,18 @@ export const authAPI = {
     let response = await instanceSamuraijs.get(`auth/me`);
     return response.data;
   },
-  async login(email, password, remember = false) {
-    let response = await instanceSamuraijs.post(`/auth/login`, { email, password, remember });
+  async login(email, password, remember = false, captcha) {
+    let response = await instanceSamuraijs.post(`auth/login`, { email, password, remember, captcha });
     return response.data;
   },
   async logout() {
-    let response = await instanceSamuraijs.delete(`/auth/login`);
+    let response = await instanceSamuraijs.delete(`auth/login`);
+    return response.data;
+  }
+}
+export const securityAPI = {
+  async getCaptchaUrl() {
+    let response = await instanceSamuraijs.get(`security/get-captcha-url`);
     return response.data;
   }
 }

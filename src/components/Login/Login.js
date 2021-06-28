@@ -19,32 +19,41 @@ const SignupSchema = Yup.object().shape({
     .required('Required'),
 });
 
+function validateCaptcha(value) {
+  let error;
+  if ( !value ) {
+    error = 'Required';
+  }
+  return error;
+}
 
 const Login = (props) => {
-  const {isAuth, loginUser} = props;
+  const { isAuth, loginUser, captchaUrl, setCaptcha } = props;
 
   if ( isAuth ) {
-    return <Redirect to={"profile"}/>
+    return <Redirect to={ 'profile' }/>;
   }
 
   return <div>
     <h1>Login</h1>
     <Formik
-      initialValues={ { email: '', password: '', remember: false } }
+      initialValues={ { email: '', password: '', remember: false, captcha: '', captchaUrl } }
 
       validationSchema={ SignupSchema }
 
       onSubmit={ async (values, { setSubmitting, resetForm, setErrors }) => {
-        const result = await authAPI.login(values.email, values.password, values.remember)
+        const result = await authAPI.login(values.email, values.password, values.remember, values.captcha);
         if ( result.resultCode === 0 ) {
           loginUser();
           setSubmitting(false);
           resetForm();
+        } else if ( result.resultCode === 10 ) {
+          setCaptcha()
         }
-        setErrors({errorValidFromServ: result.messages[0]});
+        setErrors({ errorValidFromServ: result.messages[0] });
       } }
     >
-      { ({ isSubmitting ,errors:{errorValidFromServ}}) => {
+      { ({ isSubmitting, errors: { errorValidFromServ } }) => {
         return (
           <Form className={ 'login-form' }>
             <Field type="email" name="email" placeholder="Your email"/>
@@ -55,7 +64,19 @@ const Login = (props) => {
               <Field type="checkbox" name="remember"/>
               Remember me
             </label>
-            {errorValidFromServ}
+            {captchaUrl && <img src={captchaUrl} alt='captcha'/>}
+            {captchaUrl && <Field name="captcha" validate={validateCaptcha}>
+              { ({ field, meta }) => {
+                return <div>
+                  <input type="text" placeholder="Captcha" { ...field } autoComplete="off"/>
+                  { meta.touched && meta.error && (
+                    <div className="login-form__message-error">{ meta.error }</div>
+                  ) }
+                </div>
+              } }
+            </Field>}
+
+            { errorValidFromServ }
             <button className="button--submit" type="submit" disabled={ isSubmitting }>
               Submit
             </button>
@@ -67,7 +88,11 @@ const Login = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  isAuth: state.auth.isAuth
-})
+  isAuth: state.auth.isAuth,
+  captchaUrl: state.auth.captchaUrl,
+});
 
-export default connect(mapStateToProps, { loginUser: Thunks.getAuthUserData })(Login);
+export default connect(mapStateToProps,
+  { loginUser: Thunks.getAuthUserData,
+    setCaptcha: Thunks.getCaptcha,
+  })(Login);
