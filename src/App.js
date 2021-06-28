@@ -18,8 +18,16 @@ const Settings = React.lazy(() => import('./components/Settings/Settings'));
 
 class App extends React.Component {
 
+  catchUnhandledRejection = (event) => {
+    console.warn(`UNHANDLED PROMISE REJECTION: ${event.reason}`);
+  };
+
   componentDidMount() {
     this.props.getInitialized();
+    window.addEventListener("unhandledrejection", this.catchUnhandledRejection);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("unhandledrejection", this.catchUnhandledRejection);
   }
 
   render() {
