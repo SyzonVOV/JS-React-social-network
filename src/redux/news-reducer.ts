@@ -1,5 +1,5 @@
-const SEND_MESSAGE = 'qw';
-const UPDATE_NEW_MESSAGE_BODY = 'qw';
+// const SEND_MESSAGE = 'qw';
+// const UPDATE_NEW_MESSAGE_BODY = 'qw';
 
 let news1 = 'A leopard strayed from a nearby forest into a village in eastern India’s West Bengal state, creating chaos and panic amongst villagers. A video, that a witness took, shows a man trying to scare the animal away with a stick.';
 let news2 = 'There is an app for Muslims. People launch it in 2016. It finds mosques and centres to pray. It is for Muslim travellers. The co-founder says that it ‘puts Islam in your pocket’.';
@@ -21,16 +21,10 @@ let initialState =  {
       newMessageBody: "",
   };
 
-const newsReducer = (state = initialState, action) => {
+const newsReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case UPDATE_NEW_MESSAGE_BODY:
       state.newMessageBody = action.body;
-      break;
-
-    case SEND_MESSAGE:
-      let body = state.newMessageBody;
-      state.newMessageBody = '';
-      state.messages.push({id: 6, message: body});
       break;
 
     default:

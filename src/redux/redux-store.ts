@@ -7,7 +7,7 @@ import usersReducer from "./users-reducer";
 import authReducer from "./auth-reducer";
 import appReducer from './app-reducer';
 
-let reducers = combineReducers({
+let rootReducer = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   newsPage: newsReducer,
@@ -15,9 +15,15 @@ let reducers = combineReducers({
   auth: authReducer,
   app: appReducer
 });
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
 
+type TRootReducer = typeof rootReducer;
+export type TAppState = ReturnType<TRootReducer>
+
+// @ts-ignore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
+
+// @ts-ignore
 window.store = store;
 
 export default store;
