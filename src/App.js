@@ -47,7 +47,7 @@ class App extends React.Component {
             '/login' }/>
           <Route path="/login" component={ Login }/>
           <Route path="/profile/:userId?" render={ () => <ProfileContainer/> }/>
-          <Route path="/users" render={ () => <UsersContainer/> }/>
+          <Route path="/users" render={ () => <UsersContainer pageTitle={'Samurais'}/> }/>
           <Suspense fallback={ <Loader/> }>
             <Route path="/news" component={ News }/>
             <Route path="/music" component={ Music }/>

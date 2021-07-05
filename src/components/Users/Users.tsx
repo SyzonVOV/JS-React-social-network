@@ -1,8 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Users.module.css';
 import { NavLink } from 'react-router-dom';
-import useTraceUpdate from '../../utils/whyRerender';
+import Paginator from '../common/Paginator/Paginator';
+import {TUser} from "../../types";
 
+type TUsersProps = {
+  currentPage: number,
+  totalUsersCount: number,
+  pageSize: number,
+  onPageChanged: (arg: number) => void,
+  users: Array<TUser>,
+  followingInProgress: Array<number>,
+  followTh: Function,
+  unfollowTh: Function
+}
+
+let Users: React.FC<TUsersProps> = ({ currentPage, totalUsersCount, pageSize, onPageChanged, users, ...props }) => {
+
+  return <div>
+    <Paginator currentPage={ currentPage } onPageChanged={ onPageChanged } pageSize={ pageSize }
+               totalItemsCount={ totalUsersCount }/>
+    { users.map(user => (
+        <User user={ user }
+              followingInProgress={ props.followingInProgress }
+              followTh={ props.followTh }
+              unfollowTh={ props.unfollowTh }
+              key={ user.id }
+        />))
+    }
+  </div>;
+};
+
+
+/*
 const Paginator = (props) => {
   useTraceUpdate(props)
   const { totalUsersCount, pageSize, currentPage, onPageChanged, portionSize = 10 } = props
@@ -16,6 +46,7 @@ const Paginator = (props) => {
   let portionCount = Math.ceil(pagesCount / portionSize);
   let leftPortionPageNumber = (portionNumber - 1) * portionSize + 1;
   let rightPortionPageNumber = portionNumber * portionSize;
+
   return (
     <div className={ styles.paginator }>
       { portionNumber > 1 &&
@@ -37,8 +68,16 @@ const Paginator = (props) => {
       } }>NEXT</button> }
     </div>);
 };
+*/
 
-const User = ({ user, followingInProgress, unfollowTh, followTh }) => {
+type TUserProps = {
+  user: TUser
+  followingInProgress: Array<number>
+  followTh: Function,
+  unfollowTh: Function
+}
+
+const User: React.FC<TUserProps> = ({ user, followingInProgress, unfollowTh, followTh }) => {
 
   return <div key={ user.id } className={ styles.item }>
 
@@ -54,15 +93,15 @@ const User = ({ user, followingInProgress, unfollowTh, followTh }) => {
 
       <div>
         { user.followed
-          ? <button disabled={ followingInProgress.some(id => id === user.id) }
-                    onClick={ () => {
-                      unfollowTh(user.id);
-                    } }>Unfollow</button>
+            ? <button disabled={ followingInProgress.some(id => id === user.id) }
+                      onClick={ () => {
+                        unfollowTh(user.id);
+                      } }>Unfollow</button>
 
-          : <button disabled={ followingInProgress.some(id => id === user.id) }
-                    onClick={ () => {
-                      followTh(user.id);
-                    } }>Follow</button> }
+            : <button disabled={ followingInProgress.some(id => id === user.id) }
+                      onClick={ () => {
+                        followTh(user.id);
+                      } }>Follow</button> }
       </div>
 
     </div>
@@ -82,16 +121,5 @@ const User = ({ user, followingInProgress, unfollowTh, followTh }) => {
 
 };
 
-let Users = (props) => {
-
-  return <div>
-    <Paginator currentPage={ props.currentPage } onPageChanged={ props.onPageChanged } pageSize={ props.pageSize }
-               totalUsersCount={ props.totalUsersCount }/>
-    { props.users.map(user => (
-      <User followingInProgress={ props.followingInProgress } user={ user } followTh={ props.followTh }
-            unfollowTh={ props.unfollowTh } key={user.id}/>))
-    }
-  </div>;
-};
 
 export default Users;
