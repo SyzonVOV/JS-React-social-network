@@ -1,6 +1,9 @@
 import {followAPI, usersAPI} from '../api/api';
 import Volodymyr from '../assets/images/Volodymyr_the_Great.jpg';
 import {TUser} from "../types";
+import {ThunkAction} from "redux-thunk";
+import {TAppState} from "./redux-store";
+//import {Dispatch} from "redux";
 
 const FOLLOW = 'user/FOLLOW';
 const UNFOLLOW = 'user/UNFOLLOW';
@@ -122,21 +125,28 @@ export const toggleFollowingProgress = (isFetching: boolean, userId: number): TT
 });
 
 //thunkCreators
-export const getUsersTh = (currentPage: number, pageSize: number) => (dispatch: any) => {
-    dispatch(setIsFetching(true));
-    dispatch(setCurrentPage(currentPage));
-    usersAPI.getUsers(currentPage, pageSize)
-        .then(data => {
-            dispatch(setIsFetching(false));
-            dispatch(setUsers(data.items.map((item: TUser) => {
-                return {...item, photoUrl: Volodymyr};
-            })));
-            dispatch(setTotalUsersCount(data.totalCount));
-        })
-        .catch(err => console.log(err));
-};
+//One way to provide types separately for dispatch and getState in return ThunkAction
+//type GetStateType = () => TAppState
+//type DispatchType = Dispatch<TActions>
+//Another way is to provide types for return value of ThunkCreator
+type TThunk = ThunkAction<void, TAppState, unknown, TActions>
 
-export const followTh = (userId: number) => (dispatch: any) => {
+export const getUsersTh = (currentPage: number, pageSize: number): TThunk =>
+    (dispatch) => {
+        dispatch(setIsFetching(true));
+        dispatch(setCurrentPage(currentPage));
+        usersAPI.getUsers(currentPage, pageSize)
+            .then(data => {
+                dispatch(setIsFetching(false));
+                dispatch(setUsers(data.items.map((item: TUser) => {
+                    return {...item, photoUrl: Volodymyr};
+                })));
+                dispatch(setTotalUsersCount(data.totalCount));
+            })
+            .catch(err => console.log(err));
+    };
+
+export const followTh = (userId: number): TThunk => (dispatch) => {
     dispatch(toggleFollowingProgress(true, userId));
     followAPI.postFollow(userId)
         .then((data: any) => {
@@ -146,7 +156,7 @@ export const followTh = (userId: number) => (dispatch: any) => {
         .catch((err: any) => console.log(err));
 };
 
-export const unfollowTh = (userId: number) => (dispatch: any) => {
+export const unfollowTh = (userId: number): TThunk => (dispatch: any) => {
     dispatch(toggleFollowingProgress(true, userId));
     followAPI.deleteFollow(userId)
         .then((data: any) => {
