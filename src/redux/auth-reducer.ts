@@ -1,4 +1,4 @@
-import {authAPI, securityAPI} from '../api/api';
+import {authAPI, EResultCodes, securityAPI} from '../api/api';
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
 const GET_CAPTCHA_SUCCESS = 'auth/GET_CAPTCHA_SUCCESS';
@@ -72,7 +72,7 @@ export const Thunks = {
     getAuthUserData: () => (dispatch: any) => {
         return authAPI.authMe()
             .then(data => {
-                if (data.resultCode === 0) {
+                if (data.resultCode === EResultCodes.Success) {
                     let {id, email, login} = data.data;
                     dispatch(setAuthUserData(id, email, login, true));
                 }
@@ -81,9 +81,9 @@ export const Thunks = {
     loginUser: (email: string, password: string, remember: boolean) => (dispatch: any) => {
         authAPI.login(email, password, remember)
             .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(Thunks.getAuthUserData());
-                } else if (data.resultCode === 10) {
+                if (data.resultCode === EResultCodes.Success) {
+                    dispatch(Thunks.getAuthUserData()) ;
+                } else if (data.resultCode === EResultCodes.Captcha) {
                     dispatch(Thunks.getCaptcha());
                 }
             });
@@ -91,7 +91,7 @@ export const Thunks = {
     logoutUser: () => (dispatch: any) => {
         authAPI.logout()
             .then(data => {
-                if (data.resultCode === 0) {
+                if (data.resultCode === EResultCodes.Success ) {
                     dispatch(setAuthUserData(null, null, null, false));
                 }
             });

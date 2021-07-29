@@ -34,7 +34,7 @@ const Login = (props) => {
     return <Redirect to={ 'profile' }/>;
   }
 
-  return <div>
+  return <>
     <h1>Login</h1>
     <Formik
       initialValues={ { email: '', password: '', remember: false, captcha: '', captchaUrl } }
@@ -84,7 +84,7 @@ const Login = (props) => {
         );
       } }
     </Formik>
-  </div>;
+  </>;
 };
 
 const mapStateToProps = (state) => ({
