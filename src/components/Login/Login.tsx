@@ -1,13 +1,24 @@
 import React from 'react';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import {ErrorMessage, Field, FieldProps, Form, Formik, FormikHelpers} from 'formik';
 import { Thunks } from '../../redux/auth-reducer';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
 import { Redirect } from 'react-router-dom';
 import { authAPI } from '../../api/api';
+import {TAppState} from "../../redux/redux-store";
+import {LoginProps} from "./Login.types";
 
 //TODO: style error message and add some space after input, so there was no jumping if error
 //TODO: reset setError after user actions
+
+interface FormikValue{
+  email: string
+  password: string
+  remember: boolean
+  captcha: string
+  captchaUrl: string | null
+  errorValidFromServ?: string
+}
 
 const SignupSchema = Yup.object().shape({
   password: Yup.string()
@@ -19,15 +30,15 @@ const SignupSchema = Yup.object().shape({
     .required('Required'),
 });
 
-function validateCaptcha(value) {
-  let error;
+function validateCaptcha(value: number): string | null {
+  let error = null;
   if ( !value ) {
     error = 'Required';
   }
   return error;
 }
 
-const Login = (props) => {
+const Login = (props: LoginProps): JSX.Element => {
   const { isAuth, loginUser, captchaUrl, setCaptcha } = props;
 
   if ( isAuth ) {
@@ -41,7 +52,7 @@ const Login = (props) => {
 
       validationSchema={ SignupSchema }
 
-      onSubmit={ async (values, { setSubmitting, resetForm, setErrors }) => {
+      onSubmit={ async (values, { setSubmitting, resetForm, setErrors }: FormikHelpers<FormikValue>) => {
         const result = await authAPI.login(values.email, values.password, values.remember, values.captcha);
         if ( result.resultCode === 0 ) {
           loginUser();
@@ -66,7 +77,7 @@ const Login = (props) => {
             </label>
             {captchaUrl && <img src={captchaUrl} alt='captcha'/>}
             {captchaUrl && <Field name="captcha" validate={validateCaptcha}>
-              { ({ field, meta }) => {
+              { ({ field, meta }: FieldProps) => {
                 return <div>
                   <input type="text" placeholder="Captcha" { ...field } autoComplete="off"/>
                   { meta.touched && meta.error && (
@@ -87,7 +98,7 @@ const Login = (props) => {
   </>;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: TAppState) => ({
   isAuth: state.auth.isAuth,
   captchaUrl: state.auth.captchaUrl,
 });
