@@ -1,8 +1,9 @@
-import {followAPI, usersAPI} from '../api/api';
 import Volodymyr from '../assets/images/Volodymyr_the_Great.jpg';
 import {TUser} from "../types";
 import {ThunkAction} from "redux-thunk";
 import {ActionsTypes, TAppState} from "./redux-store";
+import {usersAPI} from "../api/usersAPI";
+import {followAPI} from "../api/followAPI";
 //import {Dispatch} from "r'edux";
 
 

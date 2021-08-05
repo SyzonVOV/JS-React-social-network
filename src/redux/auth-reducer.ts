@@ -1,4 +1,6 @@
-import {authAPI, EResultCodes, securityAPI} from '../api/api';
+import {EResultCodes} from '../api/api';
+import {authAPI} from "../api/authAPI";
+import {securityAPI} from "../api/securityAPI";
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
 const GET_CAPTCHA_SUCCESS = 'auth/GET_CAPTCHA_SUCCESS';

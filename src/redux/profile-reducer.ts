@@ -1,7 +1,7 @@
-import {profileAPI} from '../api/api';
 import Volodymyr from '../assets/images/Volodymyr_the_Great.jpg';
 import {TPhoto, TPost, TProfile } from '../types';
 import {objIterationWithReplacement} from '../utils/helpers';
+import {profileAPI} from "../api/profileAPI";
 
 const APP_POST = 'prof/APP-POST';
 const DEL_POST = 'prof/DEL_POST';

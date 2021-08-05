@@ -4,7 +4,7 @@ import ProfileStatusMessage from './ProfileStatusMessage';
 import backgroundIMG from '../../../assets/images/1282257.jpg';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { checkObjHasTrueValues } from '../../../utils/helpers';
-import { profileAPI } from '../../../api/api';
+import { profileAPI } from '../../../api/profileAPI';
 
 
 function ProfileInfo(props) {

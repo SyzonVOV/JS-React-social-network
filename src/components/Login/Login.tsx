@@ -4,9 +4,9 @@ import { Thunks } from '../../redux/auth-reducer';
 import { connect } from 'react-redux';
 import * as Yup from 'yup';
 import { Redirect } from 'react-router-dom';
-import { authAPI } from '../../api/api';
 import {TAppState} from "../../redux/redux-store";
 import {LoginProps} from "./Login.types";
+import {authAPI} from "../../api/authAPI";
 
 //TODO: style error message and add some space after input, so there was no jumping if error
 //TODO: reset setError after user actions
