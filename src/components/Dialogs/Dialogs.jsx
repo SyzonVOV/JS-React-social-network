@@ -58,7 +58,7 @@ const TextAreaForm = (props) => (
     >
       { ({ isSubmitting }) => (
         <Form>
-          <Field component="textarea" name="message" rows="5" cols="50" placeholder="Enter your message here."/>
+          <Field component="textarea" name="message"    placeholder="Enter your message here."/>
           <div>
             <button className="button--submit" type="submit" disabled={ isSubmitting }>
               Save

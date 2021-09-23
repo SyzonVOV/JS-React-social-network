@@ -114,7 +114,7 @@ export const Thunks = {
                 }
             });
     },
-    updateAvatar: (file:any) => (dispatch: any) => {
+    updateAvatar: (file: File) => (dispatch: any) => {
         profileAPI.updateAvatar(file)
             .then(response => {
                 if (response.resultCode === 0) {
