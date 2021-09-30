@@ -7,7 +7,7 @@ import {followAPI} from "../api/followAPI";
 //import {Dispatch} from "r'edux";
 
 
-type TInitialState = typeof initialState
+export type TInitialState = typeof initialState
 let initialState = {
     users: [] as Array<TUser>,
     pageSize: 40,

@@ -31,6 +31,6 @@ export type TUser = {
     id: number,
     photos: TPhoto,
     status: string | null,
-    followed: false,
+    followed: boolean,
     photoUrl?: string
 }
