@@ -11,7 +11,7 @@ import {authAPI} from "../../api/authAPI";
 //TODO: style error message and add some space after input, so there was no jumping if error
 //TODO: reset setError after user actions
 
-interface FormikValue{
+interface IFormikValue{
   email: string
   password: string
   remember: boolean
@@ -52,7 +52,7 @@ const Login = (props: LoginProps): JSX.Element => {
 
       validationSchema={ SignupSchema }
 
-      onSubmit={ async (values, { setSubmitting, resetForm, setErrors }: FormikHelpers<FormikValue>) => {
+      onSubmit={ async (values, { setSubmitting, resetForm, setErrors }: FormikHelpers<IFormikValue>) => {
         const result = await authAPI.login(values.email, values.password, values.remember, values.captcha);
         if ( result.resultCode === 0 ) {
           loginUser();

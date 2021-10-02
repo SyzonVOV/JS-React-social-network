@@ -2,31 +2,37 @@ import React from 'react';
 import styles from './Users.module.css';
 import { NavLink } from 'react-router-dom';
 import Paginator from '../common/Paginator/Paginator';
-import {TUser} from "../../types";
+import { TUser } from '../../types';
+import { UsersSearchForm } from './UsersSearchForm';
+import { TUsersFilters } from '../../redux/users-reducer';
 
 type TUsersProps = {
   currentPage: number,
   totalUsersCount: number,
   pageSize: number,
   onPageChanged: (arg: number) => void,
+  onFilterChanged: (arg: TUsersFilters) => void,
   users: Array<TUser>,
   followingInProgress: Array<number>,
   followTh: Function,
   unfollowTh: Function
 }
 
-let Users: React.FC<TUsersProps> = ({ currentPage, totalUsersCount, pageSize, onPageChanged, users, ...props }) => {
+let Users: React.FC<TUsersProps> = ({ currentPage, totalUsersCount, pageSize, onPageChanged, onFilterChanged, users, ...props }) => {
 
   return <div>
+
+    <UsersSearchForm onFilterChanged={onFilterChanged}/>
+
     <Paginator currentPage={ currentPage } onPageChanged={ onPageChanged } pageSize={ pageSize }
                totalItemsCount={ totalUsersCount }/>
-    { users.map(user => (
-        <User user={ user }
-              followingInProgress={ props.followingInProgress }
-              followTh={ props.followTh }
-              unfollowTh={ props.unfollowTh }
-              key={ user.id }
-        />))
+    { users.map( user => (
+      <User user={ user }
+            followingInProgress={ props.followingInProgress }
+            followTh={ props.followTh }
+            unfollowTh={ props.unfollowTh }
+            key={ user.id }
+      />) )
     }
   </div>;
 };
@@ -93,15 +99,15 @@ const User: React.FC<TUserProps> = ({ user, followingInProgress, unfollowTh, fol
 
       <div>
         { user.followed
-            ? <button disabled={ followingInProgress.some(id => id === user.id) }
-                      onClick={ () => {
-                        unfollowTh(user.id);
-                      } }>Unfollow</button>
+          ? <button disabled={ followingInProgress.some( id => id === user.id ) }
+                    onClick={ () => {
+                      unfollowTh( user.id );
+                    } }>Unfollow</button>
 
-            : <button disabled={ followingInProgress.some(id => id === user.id) }
-                      onClick={ () => {
-                        followTh(user.id);
-                      } }>Follow</button> }
+          : <button disabled={ followingInProgress.some( id => id === user.id ) }
+                    onClick={ () => {
+                      followTh( user.id );
+                    } }>Follow</button> }
       </div>
 
     </div>

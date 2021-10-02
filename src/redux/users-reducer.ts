@@ -4,10 +4,11 @@ import {ThunkAction} from "redux-thunk";
 import {ActionsTypes, TAppState} from "./redux-store";
 import {usersAPI} from "../api/usersAPI";
 import {followAPI} from "../api/followAPI";
-//import {Dispatch} from "r'edux";
+//import {Dispatch} from "redux";
 
 
 export type TInitialState = typeof initialState
+export type TUsersFilters = typeof initialState.filters
 let initialState = {
     users: [] as Array<TUser>,
     pageSize: 40,
@@ -15,6 +16,10 @@ let initialState = {
     currentPage: 1,
     isFetching: true,
     followingInProgress: [] as Array<number>, // array of users id
+    filters: {
+        term: '',
+        friend: '',
+    }
 };
 
 // type TActions =
@@ -70,6 +75,12 @@ const usersReducer = (state = initialState, action: TActions): TInitialState => 
                 currentPage: action.currentPage,
             };
 
+        case "SET_FILTERS":
+            return {
+                ...state,
+                filters: action.payload,
+            };
+
         case "TOGGLE_IS_FETCHING":
             return {
                 ...state,
@@ -99,8 +110,6 @@ const usersReducer = (state = initialState, action: TActions): TInitialState => 
 // type TSetIsFetchingAC = { type: typeof TOGGLE_IS_FETCHING, isFetching: boolean };
 // type TToggleFollowingProgressAC = { type: typeof TOGGLE_FOLLOWING_PROGRESS, isFetching: boolean, userId: number };
 
-
-
 export const userAC = {
     followSuccess: (userID: number) => ({type: 'FOLLOW', userID} as const),
     unfollowSuccess: (userID: number) => {
@@ -111,6 +120,7 @@ export const userAC = {
     },
     setUsers: (users: Array<TUser>) => ({type: 'SET_USERS', users} as const),
     setCurrentPage: (currentPage: number) => ({type: 'SET_CURRENT_PAGE', currentPage} as const),
+    setFilters: (filter: TUsersFilters) => ({type: 'SET_FILTERS', payload: filter} as const),
     setTotalUsersCount: (totalUsersCount: number) => ({
         type: 'SET_TOTAL_USERS_COUNT',
         totalUsersCount
@@ -131,11 +141,12 @@ export const userAC = {
 //Another way is to provide types for return value of ThunkCreator
 type TThunk = ThunkAction<void, TAppState, unknown, TActions>
 
-export const getUsersTh = (currentPage: number, pageSize: number): TThunk =>
+export const getUsersTh = (currentPage: number, pageSize: number, term: string, friend: string): TThunk =>
     (dispatch) => {
         dispatch(userAC.setIsFetching(true));
         dispatch(userAC.setCurrentPage(currentPage));
-        usersAPI.getUsers(currentPage, pageSize)
+        dispatch(userAC.setFilters( { term, friend }));
+        usersAPI.getUsers(currentPage, pageSize, term, friend)
             .then(data => {
                 dispatch(userAC.setIsFetching(false));
                 dispatch(userAC.setUsers(data.items.map((item: TUser) => {
