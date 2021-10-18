@@ -1,6 +1,8 @@
 import { Field, Form, Formik, FormikHelpers } from 'formik';
 import React from 'react';
 import { TUsersFilters } from '../../redux/users-reducer';
+import { useSelector } from 'react-redux';
+import userSelectors from '../../redux/selectors/users-selector';
 
 type TProps = {
   onFilterChanged: (arg: TUsersFilters) => void,
@@ -15,6 +17,9 @@ export const UsersSearchForm = (props: TProps) => {
 
   const {onFilterChanged} = props
 
+  const term: string = useSelector( userSelectors.selectTerm )
+  const friend: string = useSelector( userSelectors.selectFriend )
+
   const submit = (values: TUsersFilters, { setSubmitting }: FormikHelpers<TUsersFilters>) => {
     onFilterChanged( values);
     setSubmitting(false);
@@ -23,7 +28,8 @@ export const UsersSearchForm = (props: TProps) => {
   return <div>
     <h3>Find users!</h3>
     <Formik
-      initialValues={ { term: '', friend: '' } }
+      enableReinitialize={true}
+      initialValues={ { term, friend } }
       validate={ usersSearchFormValidate }
       onSubmit={ submit }
     >

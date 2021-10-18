@@ -1,30 +1,66 @@
 import React, { useEffect } from 'react';
 import styles from './Users.module.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import Paginator from '../common/Paginator/Paginator';
 import { TUser } from '../../types';
 import { UsersSearchForm } from './UsersSearchForm';
-import { getUsersTh, TUsersFilters, unfollowTh, followTh } from '../../redux/users-reducer';
+import { followTh, getUsersTh, TUsersFilters, unfollowTh } from '../../redux/users-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import userSelectors from '../../redux/selectors/users-selector';
 
 type TUsersProps = {}
 
-const Users: React.FC<TUsersProps> = ()=> {
+type QueryParamsType = { term?: string; page?: string; friend?: string }
+
+const Users: React.FC<TUsersProps> = () => {
 
   const totalUsersCount = useSelector( userSelectors.selectQuantityOfUsers )
   const users = useSelector( userSelectors.selectAllUsers )
   const currentPage = useSelector( userSelectors.selectCurrentPage )
   const pageSize = useSelector( userSelectors.selectPageSize )
-  const term = useSelector( userSelectors.selectTerm )
+  const term: string = useSelector( userSelectors.selectTerm )
   const friend = useSelector( userSelectors.selectFriend )
   const followingInProgress = useSelector( userSelectors.selectFollowingInProgress )
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect( () => {
-    dispatch( getUsersTh( currentPage, pageSize, '', '' ) );
+    const urlParams = new URLSearchParams( history.location.search );
+    console.log( urlParams )
+
+    let actualPage = currentPage;
+    let actualTerm = term;
+    let actualFriend: string = friend;
+
+    if ( urlParams.has( 'page' ) ) {
+      actualPage = Number( urlParams.get( 'page' ) )
+    }
+
+    if ( urlParams.has( 'term' ) ) {
+      actualTerm = urlParams.get( 'term' ) as string
+    }
+
+    if ( urlParams.has( 'friend' ) ) {
+      actualFriend = urlParams.get( 'friend' ) as string
+    }
+
+    dispatch( getUsersTh( actualPage, pageSize, actualTerm, actualFriend ) );
   }, [] )
+
+  useEffect( () => {
+    const query: QueryParamsType = {}
+
+    if (!!term) query.term = term
+    if (friend !== '') query.friend = String(friend)
+    if (currentPage !== 1) query.page = String(currentPage)
+
+    let searchParams = new URLSearchParams( query );
+    history.push( {
+      pathname: '/users',
+      search: `?${ searchParams.toString() }`,
+    } )
+  }, [ term, friend, currentPage ] )
 
   const onPageChanged = (pageNumber: number) => {
     dispatch( getUsersTh( pageNumber, pageSize, term, friend ) );
