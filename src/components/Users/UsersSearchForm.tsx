@@ -3,14 +3,14 @@ import React from 'react';
 import { TUsersFilters } from '../../redux/users-reducer';
 import { useSelector } from 'react-redux';
 import userSelectors from '../../redux/selectors/users-selector';
+import { Button } from 'antd';
 
 type TProps = {
   onFilterChanged: (arg: TUsersFilters) => void,
 }
 
-const usersSearchFormValidate = (values: any) => {
-  const errors = {};
-  return errors;
+const usersSearchFormValidate = () => {
+  return {  };
 }
 
 export const UsersSearchForm = (props: TProps) => {
@@ -41,9 +41,9 @@ export const UsersSearchForm = (props: TProps) => {
             <option value="true">Only followed</option>
             <option value="false">Only unfollowed</option>
           </Field>
-          <button type="submit" disabled={ isSubmitting }>
+          <Button type='primary' htmlType="submit" disabled={ isSubmitting }>
             Find
-          </button>
+          </Button>
         </Form>
       ) }
     </Formik>

@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "./Header";
+import HeaderStyle from "./HeaderStyle";
 import { connect } from "react-redux";
 import { Thunks } from "../../redux/auth-reducer";
 
@@ -8,7 +8,7 @@ class HeaderContainer extends React.Component {
 
   render () {
   return (
-      <Header {...this.props}/>
+      <HeaderStyle {...this.props}/>
   )}
 }
 

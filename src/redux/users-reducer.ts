@@ -11,7 +11,7 @@ export type TInitialState = typeof initialState
 export type TUsersFilters = typeof initialState.filters
 let initialState = {
     users: [] as Array<TUser>,
-    pageSize: 40,
+    pageSize: 25,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,

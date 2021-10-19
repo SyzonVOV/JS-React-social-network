@@ -1,17 +1,44 @@
-import React from "react";
-import style from "./NavbarLeft.module.css";
-import {NavLink} from "react-router-dom";
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Layout, Menu } from 'antd';
+import {
+  AppstoreOutlined,
+  ContainerOutlined,
+  DesktopOutlined,
+  MailOutlined,
+  PieChartOutlined,
+  SoundOutlined,
+} from '@ant-design/icons';
 
 function NavbarLeft() {
+  const [activeMenu, setActiveMenu]=useState('1')
   return (
-    <nav className={style.nav}>
-      <div className={`${style.item} active`}><NavLink to="/profile">Profile</NavLink></div>
-      <div className={style.item}><NavLink to="/dialogs">Messages</NavLink></div>
-      <div className={style.item}><NavLink to="/users">Users</NavLink></div>
-      <div className={style.item}><NavLink to="/news">News</NavLink></div>
-      <div className={style.item}><NavLink to="/music">Music</NavLink></div>
-      <div className={style.item}><NavLink to="/settings">Settings</NavLink></div>
-    </nav>
+    <Layout.Sider className="site-layout-background" width={ 200 }>
+      <Menu
+        mode="inline"
+        selectedKeys={ [activeMenu] }
+        style={ { height: '100%' } }
+      >
+        <Menu.Item key="1" icon={<PieChartOutlined />} onClick={ () => {setActiveMenu("1")}}>
+          <NavLink to="/profile">Profile</NavLink>
+        </Menu.Item>
+        <Menu.Item key="2" icon={<MailOutlined />} onClick={ () => {setActiveMenu("2")}}>
+          <NavLink to="/dialogs">Messages</NavLink>
+        </Menu.Item>
+        <Menu.Item key="3" icon={<ContainerOutlined /> } onClick={ () => {setActiveMenu("3")}}>
+          <NavLink to="/users">Users</NavLink>
+        </Menu.Item>
+        <Menu.Item key="4" icon={<AppstoreOutlined />} onClick={ () => {setActiveMenu("4")}}>
+          <NavLink to="/news">News</NavLink>
+        </Menu.Item>
+        <Menu.Item key="5" icon={<SoundOutlined />} onClick={ () => {setActiveMenu("5")}}>
+          <NavLink to="/music">Music</NavLink>
+        </Menu.Item>
+        <Menu.Item key="6" icon={<DesktopOutlined />} onClick={ () => {setActiveMenu("6")}}>
+          <NavLink to="/settings">Settings</NavLink>
+        </Menu.Item>
+      </Menu>
+    </Layout.Sider>
   )
 }
 
