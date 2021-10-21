@@ -16,6 +16,7 @@ import { Breadcrumb, Layout } from 'antd';
 
 const { Content, Footer } = Layout;
 
+const Chat = React.lazy(() => import('./pages/Chat/ChatPage'));
 const News = React.lazy(() => import('./components/News/News'));
 const Music = React.lazy(() => import('./components/Music/Music'));
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
@@ -49,7 +50,7 @@ class App extends React.Component {
           </Breadcrumb>
           <Layout className="site-layout-background" style={ { padding: '24px 0' } }>
             <NavbarLeft/>
-            <Content style={ { padding: '0 24px', minHeight: 280 } }>
+            <Content style={ { padding: '0 24px', minHeight: 1280 } }>
               <Switch>
                 <Route path="/dialogs">
                   <SuperDialogsContainer/>
@@ -61,6 +62,7 @@ class App extends React.Component {
                 <Route path="/profile/:userId?" render={ () => <ProfileContainer/> }/>
                 <Route path="/users" render={ () => <UsersContainer pageTitle={ 'Samurais' }/> }/>
                 <Suspense fallback={ <Loader/> }>
+                  <Route path="/chat" component={ Chat }/>
                   <Route path="/news" component={ News }/>
                   <Route path="/music" component={ Music }/>
                   <Route path="/settings" component={ Settings }/>

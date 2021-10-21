@@ -16,19 +16,19 @@ function NavbarRight() {
         style={ { height: '100%' } }
       >
         <Menu.Item key="1" icon={<PieChartOutlined />}>
-          <a href="#">Profile</a>
+          <a href="/">Profile</a>
         </Menu.Item>
         <Menu.Item key="2" icon={<MailOutlined />}>
-          <a href="#">Messages</a>
+          <a href="/">Messages</a>
         </Menu.Item>
         <Menu.Item key="3" icon={<ContainerOutlined />}>
-          <a href="#">News</a>
+          <a href="/">News</a>
         </Menu.Item>
         <Menu.Item key="4" icon={<SoundOutlined />}>
-          <a href="#">Music</a>
+          <a href="/">Music</a>
         </Menu.Item>
         <Menu.Item key="5" icon={<DesktopOutlined />}>
-          <a href="#">Settings</a>
+          <a href="/">Settings</a>
         </Menu.Item>
       </Menu>
     </Layout.Sider>

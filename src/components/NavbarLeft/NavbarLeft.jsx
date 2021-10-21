@@ -8,8 +8,9 @@ import {
   MailOutlined,
   PieChartOutlined,
   SoundOutlined,
+  WechatOutlined,
 } from '@ant-design/icons';
-
+//todo Create enum for pages names and create effect to synchronise uri and selected menu
 function NavbarLeft() {
   const [activeMenu, setActiveMenu]=useState('1')
   return (
@@ -27,6 +28,9 @@ function NavbarLeft() {
         </Menu.Item>
         <Menu.Item key="3" icon={<ContainerOutlined /> } onClick={ () => {setActiveMenu("3")}}>
           <NavLink to="/users">Users</NavLink>
+        </Menu.Item>
+        <Menu.Item key="7" icon={<WechatOutlined />} onClick={ () => {setActiveMenu("7")}}>
+          <NavLink to="/chat">Chat</NavLink>
         </Menu.Item>
         <Menu.Item key="4" icon={<AppstoreOutlined />} onClick={ () => {setActiveMenu("4")}}>
           <NavLink to="/news">News</NavLink>

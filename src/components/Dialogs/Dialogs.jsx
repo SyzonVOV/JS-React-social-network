@@ -2,6 +2,8 @@ import React from 'react';
 import style from './Dialogs.module.css';
 import { NavLink } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
+import { Button } from 'antd';
+import { Input } from 'antd';
 
 
 function Dialogs(props) {
@@ -58,11 +60,16 @@ const TextAreaForm = (props) => (
     >
       { ({ isSubmitting }) => (
         <Form>
-          <Field component="textarea" name="message"    placeholder="Enter your message here."/>
+          <Field name="message" >
+            {({field}) => (
+              <Input.TextArea  allowClear showCount maxLength={150} placeholder="Enter your message here." {...field}/>
+            )}
+          </Field>
+
           <div>
-            <button className="button--submit" type="submit" disabled={ isSubmitting }>
+            <Button type="primary" htmlType="submit" disabled={ isSubmitting }>
               Save
-            </button>
+            </Button>
           </div>
         </Form>
       ) }
