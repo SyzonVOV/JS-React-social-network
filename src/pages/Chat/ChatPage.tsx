@@ -34,12 +34,18 @@ function Messages(): JSX.Element {
   const [ messages, setMessages ] = useState<Array<TChatMessage>>( [] )
 
   useEffect( () => {
-    ws.addEventListener( 'message', (e: MessageEvent) => {
+
+    const listener = (e: MessageEvent) => {
       let newMessages = JSON.parse( e.data );
       setMessages( (oldMessages) => {
         return [ ...oldMessages, ...newMessages ]
       } );
-    } )
+    };
+
+    ws.addEventListener( 'message', listener )
+    return () => {
+      ws.removeEventListener( 'message', listener )
+    }
   }, [] )
 
   return (
@@ -67,12 +73,25 @@ function Message({ message }: MessageProps): JSX.Element {
 
 function AddMessageForm(): JSX.Element {
 
+  const [ isWSConnectionReady, setIsWSConnectionReady ] = useState( false );
+
+  useEffect( () => {
+    const listener = () => {
+      setIsWSConnectionReady( true )
+    };
+
+    ws.addEventListener( 'open', listener )
+    return () => {
+      ws.removeEventListener( 'open', listener )
+    }
+  }, [] )
+
   const formik = useFormik( {
     initialValues: {
       message: '',
     },
-    onSubmit: (values,{resetForm}) => {
-      ws.send(values.message);
+    onSubmit: (values, { resetForm }) => {
+      ws.send( values.message );
       resetForm();
     },
   } );
@@ -82,7 +101,7 @@ function AddMessageForm(): JSX.Element {
       <form onSubmit={ formik.handleSubmit }>
         <Input.TextArea cols={ 50 } name={ 'message' } onChange={ formik.handleChange }
                         value={ formik.values.message }/>
-        <Button htmlType={'submit'}>Send</Button>
+        <Button disabled={ !isWSConnectionReady } htmlType={ 'submit' }>Send</Button>
       </form>
     </>
   );
