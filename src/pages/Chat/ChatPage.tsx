@@ -1,15 +1,10 @@
-import React, { HTMLAttributes, useEffect, useState } from 'react';
+import React, { HTMLAttributes, useEffect } from 'react';
 import { Avatar, Button, Input } from 'antd';
 import { useFormik } from 'formik';
-
-export type TChatMessage = {
-  message: string
-  photo: string
-  userId: number
-  userName: string
-}
-
-const ws = new WebSocket( 'wss://social-network.samuraijs.com/handlers/ChatHandler.ashx' )
+import { TChatMessage } from '../../types';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendMessage, startMessagesListening, stopMessagesListening } from '../../redux/chat-reducer';
+import { TAppState } from '../../redux/redux-store';
 
 export default function ChatPage(): JSX.Element {
   return (
@@ -21,6 +16,15 @@ export default function ChatPage(): JSX.Element {
 
 function Chat(): JSX.Element {
 
+  const dispatch = useDispatch();
+
+  useEffect( () => {
+    dispatch( startMessagesListening() )
+    return () => {
+      dispatch( stopMessagesListening() )
+    }
+  }, [] )
+
   return (
     <>
       <Messages/>
@@ -31,22 +35,7 @@ function Chat(): JSX.Element {
 
 function Messages(): JSX.Element {
 
-  const [ messages, setMessages ] = useState<Array<TChatMessage>>( [] )
-
-  useEffect( () => {
-
-    const listener = (e: MessageEvent) => {
-      let newMessages = JSON.parse( e.data );
-      setMessages( (oldMessages) => {
-        return [ ...oldMessages, ...newMessages ]
-      } );
-    };
-
-    ws.addEventListener( 'message', listener )
-    return () => {
-      ws.removeEventListener( 'message', listener )
-    }
-  }, [] )
+  const messages = useSelector( (state: TAppState) => state.chat.messages )
 
   return (
     <div style={ { height: '500px', overflowY: 'auto' } }>{ messages.map( (m) => {
@@ -73,25 +62,14 @@ function Message({ message }: MessageProps): JSX.Element {
 
 function AddMessageForm(): JSX.Element {
 
-  const [ isWSConnectionReady, setIsWSConnectionReady ] = useState( false );
-
-  useEffect( () => {
-    const listener = () => {
-      setIsWSConnectionReady( true )
-    };
-
-    ws.addEventListener( 'open', listener )
-    return () => {
-      ws.removeEventListener( 'open', listener )
-    }
-  }, [] )
+  const dispatch = useDispatch()
 
   const formik = useFormik( {
     initialValues: {
       message: '',
     },
     onSubmit: (values, { resetForm }) => {
-      ws.send( values.message );
+      dispatch( sendMessage( values.message ) )
       resetForm();
     },
   } );
@@ -101,7 +79,7 @@ function AddMessageForm(): JSX.Element {
       <form onSubmit={ formik.handleSubmit }>
         <Input.TextArea cols={ 50 } name={ 'message' } onChange={ formik.handleChange }
                         value={ formik.values.message }/>
-        <Button disabled={ !isWSConnectionReady } htmlType={ 'submit' }>Send</Button>
+        <Button htmlType={ 'submit' }>Send</Button>
       </form>
     </>
   );
