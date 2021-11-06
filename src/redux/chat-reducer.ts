@@ -1,28 +1,35 @@
 import { TChatMessage } from '../types';
 import { ActionsTypes, TAppState } from './redux-store';
 import { ThunkAction } from 'redux-thunk';
-import { chatAPI } from '../api/chatAPI';
+import { chatAPI, TWSConnectionStatus } from '../api/chatAPI';
 import { Dispatch } from 'redux';
 
 
-export type InitStateType = {
+export type TInitState = {
   messages: Array<TChatMessage>
+  status: TWSConnectionStatus
 }
 type TActions = ActionsTypes<typeof chatAC>
 type TThunk = ThunkAction<void, TAppState, unknown, TActions>
 
 
-let initialState: InitStateType = {
+let initialState: TInitState = {
   messages: [],
+  status: 'pending',
 };
 
-const chatReducer = (state = initialState, action: TActions): InitStateType => {
+const chatReducer = (state = initialState, action: TActions): TInitState => {
 
   switch (action.type) {
     case 'chat/MESSAGES_RECEIVED':
       return {
         ...state,
         messages: [ ...state.messages, ...action.payload.messages ],
+      };
+    case 'chat/STATUS_CHANGED':
+      return {
+        ...state,
+        status: action.payload.status,
       };
 
     default:
@@ -34,6 +41,9 @@ const chatReducer = (state = initialState, action: TActions): InitStateType => {
 export const chatAC = {
   messagesReceived: (messages: Array<TChatMessage>) => ({
     type: 'chat/MESSAGES_RECEIVED', payload: { messages },
+  } as const),
+  statusChanged: (status: TInitState['status']) => ({
+    type: 'chat/STATUS_CHANGED', payload: { status },
   } as const),
 }
 
@@ -47,14 +57,25 @@ const newMessageHandlerCreator = (dispatch: Dispatch) => {
   }
   return _newMessageHandler
 };
+let _statusChangedHandler: ((status: TWSConnectionStatus) => void) | null = null
+const statusChangedHandLerCreator = (dispatch: Dispatch) => {
+  if ( _statusChangedHandler === null ) {
+    _statusChangedHandler = (status) => {
+      dispatch( chatAC.statusChanged( status ) )
+    }
+  }
+  return _statusChangedHandler
+}
 
 export const startMessagesListening = (): TThunk => (dispatch) => {
   chatAPI.start()
-  chatAPI.subscribe( newMessageHandlerCreator( dispatch ) )
+  chatAPI.subscribe( 'messages-received', newMessageHandlerCreator( dispatch ) )
+  chatAPI.subscribe( 'status-changed', statusChangedHandLerCreator( dispatch ) )
 };
 
 export const stopMessagesListening = (): TThunk => (dispatch) => {
-  chatAPI.unsubscribe( newMessageHandlerCreator( dispatch ) );
+  chatAPI.unsubscribe( 'messages-received', newMessageHandlerCreator( dispatch ) );
+  chatAPI.unsubscribe( 'status-changed', statusChangedHandLerCreator( dispatch ) );
   chatAPI.stop();
 };
 

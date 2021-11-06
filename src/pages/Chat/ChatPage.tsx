@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useEffect } from 'react';
+import React, { HTMLAttributes, useEffect, useRef, useState } from 'react';
 import { Avatar, Button, Input } from 'antd';
 import { useFormik } from 'formik';
 import { TChatMessage } from '../../types';
@@ -15,7 +15,7 @@ export default function ChatPage(): JSX.Element {
 }
 
 function Chat(): JSX.Element {
-
+  const isWSConnected = useSelector( (state: TAppState) => state.chat.status );
   const dispatch = useDispatch();
 
   useEffect( () => {
@@ -27,6 +27,7 @@ function Chat(): JSX.Element {
 
   return (
     <>
+      { isWSConnected === 'error' && <div><h2>Some error occurred. Please refresh the page</h2></div> }
       <Messages/>
       <AddMessageForm/>
     </>
@@ -36,11 +37,33 @@ function Chat(): JSX.Element {
 function Messages(): JSX.Element {
 
   const messages = useSelector( (state: TAppState) => state.chat.messages )
+  const messagesAnchorRef = useRef<HTMLDivElement>( null );
+  const [ isAutoScroll, setIsAutoScroll ] = useState( true );
+
+
+  useEffect( () => {
+    if ( isAutoScroll ) {
+      messagesAnchorRef.current?.scrollIntoView( { behavior: 'smooth', block: 'end', inline: 'nearest' } )
+    }
+  }, [ messages ] )
+
+  const scrollHandler = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+
+    const element = e.currentTarget;
+    if ( Math.abs( (element.scrollHeight - element.scrollTop) - element.clientHeight ) ) {
+      !isAutoScroll && setIsAutoScroll( true )
+    } else {
+      isAutoScroll && setIsAutoScroll( false )
+    }
+
+  }
 
   return (
-    <div style={ { height: '500px', overflowY: 'auto' } }>{ messages.map( (m) => {
-      return <Message key={ m.message } message={ m }/>
-    } ) }</div>
+    <div style={ { height: '500px', overflowY: 'auto' } }
+         onScroll={ scrollHandler }>
+      { messages.map( m => <MemoizedMessage key={ m.message + m.userName } message={ m }/> ) }
+      <div ref={ messagesAnchorRef }></div>
+    </div>
   );
 }
 
@@ -48,8 +71,9 @@ export interface MessageProps extends HTMLAttributes<HTMLDivElement> {
   message: TChatMessage
 }
 
-function Message({ message }: MessageProps): JSX.Element {
+const MemoizedMessage = React.memo( Message )
 
+function Message({ message }: MessageProps): JSX.Element {
   return (
     <div>
       <Avatar size={ 64 } src={ message.photo }/><b>{ message.userName }</b>
@@ -63,6 +87,7 @@ function Message({ message }: MessageProps): JSX.Element {
 function AddMessageForm(): JSX.Element {
 
   const dispatch = useDispatch()
+  const isWSConnected = useSelector( (state: TAppState) => state.chat.status );
 
   const formik = useFormik( {
     initialValues: {
@@ -79,7 +104,7 @@ function AddMessageForm(): JSX.Element {
       <form onSubmit={ formik.handleSubmit }>
         <Input.TextArea cols={ 50 } name={ 'message' } onChange={ formik.handleChange }
                         value={ formik.values.message }/>
-        <Button htmlType={ 'submit' }>Send</Button>
+        <Button disabled={ isWSConnected === 'pending' } htmlType={ 'submit' }>Send</Button>
       </form>
     </>
   );
